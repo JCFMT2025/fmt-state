@@ -10,24 +10,30 @@ jobs:
   update_timestamp:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repo
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Confirm JSON is present
+      - name: Show Original JSON File
         run: cat fmt-state.json
 
-      - name: Update Timestamp in JSON
+      - name: Attempt jq Timestamp Injection (with verbose logs)
         run: |
+          echo "Preparing timestamp update..."
           TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          echo "New timestamp will be: $TS"
-          jq --arg ts "$TS" '.metadata.last_updated = $ts' fmt-state.json > tmp.json
+          echo "Timestamp to inject: $TS"
+          echo "Running jq now..."
+          jq --arg ts "$TS" '.metadata.last_updated = $ts' fmt-state.json > tmp.json || {
+            echo "❌ JQ FAILED"
+            exit 1
+          }
+          echo "JQ succeeded"
           mv tmp.json fmt-state.json
           cat fmt-state.json
 
-      - name: Commit and Push (only if changed)
+      - name: Commit and Push
         run: |
           git config user.name "fmt-bot"
           git config user.email "bot@fmt.dev"
