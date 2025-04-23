@@ -9,7 +9,7 @@
     "use_fmt_prediction": true,
     "watchdog_ready": true,
     "auto_invoke_fms": true,
-    "json_source": "https://raw.githubusercontent.com/YOUR_USERNAME/fmt-state/main/fmt-state.json",
+    "json_source": "https://raw.githubusercontent.com/JCFMT2025/fmt-state/refs/heads/main/fmt-state.json",
     "automation": {
       "state_syncer": "VD-34",
       "scheduler": "VD-35"
