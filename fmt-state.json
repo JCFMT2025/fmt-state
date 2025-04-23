@@ -58,3 +58,29 @@
     "VD-35": { "task": "FMT Scheduler", "status": "Active" },
     "VD-36": { "task": "FMT Execution Orchestrator", "status": "Booting" }
   },
+  "tasks": {
+    "Core API Refactor": ["VD-1"],
+    "AI Model Tuning": ["VD-2"],
+    "Internal Dashboard V2": ["VD-3"],
+    "Backend Integration Patch": ["VD-4"],
+    "Auth Revalidation System": ["VD-5", "VD-21"],
+    "Notification Logic Engine": ["VD-6"],
+    "UI Components Library": ["VD-7", "VD-22"],
+    "QA Automation Setup": ["VD-8", "VD-23"],
+    "Migration Tracker Service": ["VD-9"],
+    "Analytics Engine (Phase 1)": ["VD-10"],
+    "DevOps Script Optimizer": ["VD-11"],
+    "Security Audit Tool": ["VD-12"],
+    "Task Parser Enhancements": ["VD-13"],
+    "Sprint Sync Engine": ["VD-14"],
+    "Microservices Gateway Handler": ["VD-15"],
+    "Frontend Testing Suite": ["VD-16"],
+    "AI-UI Bridge Layer": ["VD-17", "VD-24"],
+    "User Flow Logging Engine": ["VD-18"],
+    "Regression Replay Tracker": ["VD-19"],
+    "Session Event Model": ["VD-20"],
+    "FMT UMI v1": ["VD-26", "VD-33"],
+    "FMT Response Router": ["VD-32"],
+    "FMT Execution Orchestrator": ["VD-36"]
+  }
+}
