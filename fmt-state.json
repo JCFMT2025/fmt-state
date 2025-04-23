@@ -1,7 +1,7 @@
 {
   "metadata": {
     "system": "FMT (Framework Management Terminal)",
-    "last_updated": "",
+    "last_updated": "2025-04-23T10:39:00Z",
     "version": "v7.4",
     "next_version_planned": "v8.0",
     "state_sync": "enabled",
@@ -21,66 +21,226 @@
     }
   },
   "vds": {
-    "VD-1": { "task": "Core API Refactor", "eta": "4h 45m" },
-    "VD-2": { "task": "AI Model Tuning", "eta": "6h 15m" },
-    "VD-3": { "task": "Internal Dashboard V2", "eta": "3h 20m" },
-    "VD-4": { "task": "Backend Integration Patch", "eta": "2h 40m" },
-    "VD-5": { "task": "Auth Revalidation System", "eta": "7h 00m", "assisted_by": "VD-21" },
-    "VD-6": { "task": "Notification Logic Engine", "eta": "5h 10m" },
-    "VD-7": { "task": "UI Components Library", "eta": "6h 35m", "assisted_by": "VD-22" },
-    "VD-8": { "task": "QA Automation Setup", "eta": "8h 20m", "assisted_by": "VD-23" },
-    "VD-9": { "task": "Migration Tracker Service", "eta": "4h 00m" },
-    "VD-10": { "task": "Analytics Engine (Phase 1)", "eta": "3h 50m" },
-    "VD-11": { "task": "DevOps Script Optimizer", "eta": "2h 25m" },
-    "VD-12": { "task": "Security Audit Tool", "eta": "5h 30m" },
-    "VD-13": { "task": "Task Parser Enhancements", "eta": "3h 15m" },
-    "VD-14": { "task": "Sprint Sync Engine", "eta": "2h 10m" },
-    "VD-15": { "task": "Microservices Gateway Handler", "eta": "6h 50m" },
-    "VD-16": { "task": "Frontend Testing Suite", "eta": "5h 05m" },
-    "VD-17": { "task": "AI-UI Bridge Layer", "eta": "4h 40m", "assisted_by": "VD-24" },
-    "VD-18": { "task": "User Flow Logging Engine", "eta": "7h 45m" },
-    "VD-19": { "task": "Regression Replay Tracker", "eta": "3h 35m" },
-    "VD-20": { "task": "Session Event Model", "eta": "2h 55m" },
-    "VD-21": { "task": "Support for VD-5" },
-    "VD-22": { "task": "Support for VD-7" },
-    "VD-23": { "task": "Support for VD-8" },
-    "VD-24": { "task": "Support for VD-17" },
-    "VD-25": { "task": "Version Map Analyst", "status": "Complete" },
-    "VD-26": { "task": "FMT UMI v1", "eta": "12h 10m", "assisted_by": "VD-33" },
-    "VD-27": { "task": "Task & ETA Analyst", "status": "Complete" },
-    "VD-28": { "task": "Support Compiler (VD-25)", "status": "Complete" },
-    "VD-29": { "task": "Output Formatter (VD-25)", "status": "Complete" },
-    "VD-30": { "task": "Task Extractor (VD-27)", "status": "Complete" },
-    "VD-31": { "task": "ETA Formatter (VD-27)", "status": "Complete" },
-    "VD-32": { "task": "FMT Response Router", "status": "Complete" },
-    "VD-33": { "task": "Support for VD-26", "status": "Assigned" },
-    "VD-34": { "task": "FMT State Syncer", "status": "Active" },
-    "VD-35": { "task": "FMT Scheduler", "status": "Active" },
-    "VD-36": { "task": "FMT Execution Orchestrator", "status": "Booting" }
+    "VD-1": {
+      "task": "Core API Refactor",
+      "eta": "4h 45m"
+    },
+    "VD-2": {
+      "task": "AI Model Tuning",
+      "eta": "6h 15m"
+    },
+    "VD-3": {
+      "task": "Internal Dashboard V2",
+      "eta": "3h 20m"
+    },
+    "VD-4": {
+      "task": "Backend Integration Patch",
+      "eta": "2h 40m"
+    },
+    "VD-5": {
+      "task": "Auth Revalidation System",
+      "eta": "7h 00m",
+      "assisted_by": "VD-21"
+    },
+    "VD-6": {
+      "task": "Notification Logic Engine",
+      "eta": "5h 10m"
+    },
+    "VD-7": {
+      "task": "UI Components Library",
+      "eta": "6h 35m",
+      "assisted_by": "VD-22"
+    },
+    "VD-8": {
+      "task": "QA Automation Setup",
+      "eta": "8h 20m",
+      "assisted_by": "VD-23"
+    },
+    "VD-9": {
+      "task": "Migration Tracker Service",
+      "eta": "4h 00m"
+    },
+    "VD-10": {
+      "task": "Analytics Engine (Phase 1)",
+      "eta": "3h 50m"
+    },
+    "VD-11": {
+      "task": "DevOps Script Optimizer",
+      "eta": "2h 25m"
+    },
+    "VD-12": {
+      "task": "Security Audit Tool",
+      "eta": "5h 30m"
+    },
+    "VD-13": {
+      "task": "Task Parser Enhancements",
+      "eta": "3h 15m"
+    },
+    "VD-14": {
+      "task": "Sprint Sync Engine",
+      "eta": "2h 10m"
+    },
+    "VD-15": {
+      "task": "Microservices Gateway Handler",
+      "eta": "6h 50m"
+    },
+    "VD-16": {
+      "task": "Frontend Testing Suite",
+      "eta": "5h 05m"
+    },
+    "VD-17": {
+      "task": "AI-UI Bridge Layer",
+      "eta": "4h 40m",
+      "assisted_by": "VD-24"
+    },
+    "VD-18": {
+      "task": "User Flow Logging Engine",
+      "eta": "7h 45m"
+    },
+    "VD-19": {
+      "task": "Regression Replay Tracker",
+      "eta": "3h 35m"
+    },
+    "VD-20": {
+      "task": "Session Event Model",
+      "eta": "2h 55m"
+    },
+    "VD-21": {
+      "task": "Support for VD-5"
+    },
+    "VD-22": {
+      "task": "Support for VD-7"
+    },
+    "VD-23": {
+      "task": "Support for VD-8"
+    },
+    "VD-24": {
+      "task": "Support for VD-17"
+    },
+    "VD-25": {
+      "task": "Version Map Analyst",
+      "status": "Complete"
+    },
+    "VD-26": {
+      "task": "FMT UMI v1",
+      "eta": "12h 10m",
+      "assisted_by": "VD-33"
+    },
+    "VD-27": {
+      "task": "Task & ETA Analyst",
+      "status": "Complete"
+    },
+    "VD-28": {
+      "task": "Support Compiler (VD-25)",
+      "status": "Complete"
+    },
+    "VD-29": {
+      "task": "Output Formatter (VD-25)",
+      "status": "Complete"
+    },
+    "VD-30": {
+      "task": "Task Extractor (VD-27)",
+      "status": "Complete"
+    },
+    "VD-31": {
+      "task": "ETA Formatter (VD-27)",
+      "status": "Complete"
+    },
+    "VD-32": {
+      "task": "FMT Response Router",
+      "status": "Complete"
+    },
+    "VD-33": {
+      "task": "Support for VD-26",
+      "status": "Assigned"
+    },
+    "VD-34": {
+      "task": "FMT State Syncer",
+      "status": "Active"
+    },
+    "VD-35": {
+      "task": "FMT Scheduler",
+      "status": "Active"
+    },
+    "VD-36": {
+      "task": "FMT Execution Orchestrator",
+      "status": "Booting"
+    }
   },
   "tasks": {
-    "Core API Refactor": ["VD-1"],
-    "AI Model Tuning": ["VD-2"],
-    "Internal Dashboard V2": ["VD-3"],
-    "Backend Integration Patch": ["VD-4"],
-    "Auth Revalidation System": ["VD-5", "VD-21"],
-    "Notification Logic Engine": ["VD-6"],
-    "UI Components Library": ["VD-7", "VD-22"],
-    "QA Automation Setup": ["VD-8", "VD-23"],
-    "Migration Tracker Service": ["VD-9"],
-    "Analytics Engine (Phase 1)": ["VD-10"],
-    "DevOps Script Optimizer": ["VD-11"],
-    "Security Audit Tool": ["VD-12"],
-    "Task Parser Enhancements": ["VD-13"],
-    "Sprint Sync Engine": ["VD-14"],
-    "Microservices Gateway Handler": ["VD-15"],
-    "Frontend Testing Suite": ["VD-16"],
-    "AI-UI Bridge Layer": ["VD-17", "VD-24"],
-    "User Flow Logging Engine": ["VD-18"],
-    "Regression Replay Tracker": ["VD-19"],
-    "Session Event Model": ["VD-20"],
-    "FMT UMI v1": ["VD-26", "VD-33"],
-    "FMT Response Router": ["VD-32"],
-    "FMT Execution Orchestrator": ["VD-36"]
+    "Core API Refactor": [
+      "VD-1"
+    ],
+    "AI Model Tuning": [
+      "VD-2"
+    ],
+    "Internal Dashboard V2": [
+      "VD-3"
+    ],
+    "Backend Integration Patch": [
+      "VD-4"
+    ],
+    "Auth Revalidation System": [
+      "VD-5",
+      "VD-21"
+    ],
+    "Notification Logic Engine": [
+      "VD-6"
+    ],
+    "UI Components Library": [
+      "VD-7",
+      "VD-22"
+    ],
+    "QA Automation Setup": [
+      "VD-8",
+      "VD-23"
+    ],
+    "Migration Tracker Service": [
+      "VD-9"
+    ],
+    "Analytics Engine (Phase 1)": [
+      "VD-10"
+    ],
+    "DevOps Script Optimizer": [
+      "VD-11"
+    ],
+    "Security Audit Tool": [
+      "VD-12"
+    ],
+    "Task Parser Enhancements": [
+      "VD-13"
+    ],
+    "Sprint Sync Engine": [
+      "VD-14"
+    ],
+    "Microservices Gateway Handler": [
+      "VD-15"
+    ],
+    "Frontend Testing Suite": [
+      "VD-16"
+    ],
+    "AI-UI Bridge Layer": [
+      "VD-17",
+      "VD-24"
+    ],
+    "User Flow Logging Engine": [
+      "VD-18"
+    ],
+    "Regression Replay Tracker": [
+      "VD-19"
+    ],
+    "Session Event Model": [
+      "VD-20"
+    ],
+    "FMT UMI v1": [
+      "VD-26",
+      "VD-33"
+    ],
+    "FMT Response Router": [
+      "VD-32"
+    ],
+    "FMT Execution Orchestrator": [
+      "VD-36"
+    ]
   }
 }
