@@ -16,12 +16,18 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
+      - name: Confirm JSON is present
+        run: cat fmt-state.json
+
       - name: Update Timestamp in JSON
         run: |
           TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          jq --arg ts "$TS" '.metadata.last_updated = $ts' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+          echo "New timestamp will be: $TS"
+          jq --arg ts "$TS" '.metadata.last_updated = $ts' fmt-state.json > tmp.json
+          mv tmp.json fmt-state.json
+          cat fmt-state.json
 
-      - name: Commit and Push
+      - name: Commit and Push (only if changed)
         run: |
           git config user.name "fmt-bot"
           git config user.email "bot@fmt.dev"
