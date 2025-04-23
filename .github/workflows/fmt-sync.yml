@@ -1,0 +1,27 @@
+name: Auto Sync FMT JSON
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - fmt-state.json
+
+jobs:
+  update_timestamp:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Update Timestamp in JSON
+        run: |
+          TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          jq --arg ts "$TS" '.metadata.last_updated = $ts' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+
+      - name: Commit and Push
+        run: |
+          git config user.name "fmt-bot"
+          git config user.email "bot@fmt.dev"
+          git add fmt-state.json
+          git commit -m "Auto-update: Sync timestamp"
+          git push
