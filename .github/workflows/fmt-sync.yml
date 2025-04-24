@@ -8,7 +8,7 @@ on:
         required: false
         default: 'false'
   schedule:
-    - cron: '0 * * * *'  # Runs every hour
+    - cron: '0 * * * *'  # Every hour UTC
   push:
     paths:
       - fmt-state.json
@@ -47,7 +47,7 @@ jobs:
           git config user.email "bot@fmt.dev"
           git add fmt-state.json
           git diff --cached --quiet || git commit -m "Auto-sync: Timestamp or structure update"
-          git push
+          git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
 
   vd_41_manual_trigger:
     runs-on: ubuntu-latest
@@ -59,4 +59,4 @@ jobs:
       - name: Trigger VD-41 Reassignment
         run: |
           echo "✅ Manual VD-41 reassignment cycle triggered."
-          # Placeholder for future: add reassignment logic here or via external hook.
+          # Placeholder: Add reassignment logic or JSON tagging here
