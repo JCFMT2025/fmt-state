@@ -1,33 +1,69 @@
-"system_profile": {
-  "purpose": "FMT is a framework management terminal using GPT for predictive modeling, task orchestration, and development tracking.",
-  "memory_policy": "This system uses no GPT memory — fmt-state.json is the sole source of truth.",
-  "update_frequency": "Auto-sync every hour or on data change via GitHub Actions.",
-  "vd_autoscan_enabled": true,
-  "vd_range_max": 100,
-  "automation_status": "Live — all scheduling and sync handled by VD-34 and VD-35.",
-  "integrity_policy": "All VD changes must be reflected here; GPT sessions use only this file."
-},
-"vd_41_log": [
-  {
-    "timestamp": "2025-04-24T14:20:32Z",
-    "cycle": 1,
-    "reassignments": [
-      {
-        "vd": "VD-03",
-        "from": "Idle",
-        "to": "Monitor GitHub Actions",
-        "reason": "Previously idle — reassigned for utility monitoring"
-      }
+{
+  "metadata": {
+    "system": "FMT (Framework Management Terminal)",
+    "last_updated": "2025-04-24T14:48:38Z",
+    "version": "v7.4",
+    "next_version_planned": "v8.0",
+    "state_sync": "enabled",
+    "force_sync_on_logic": true,
+    "use_fmt_prediction": true,
+    "watchdog_ready": true,
+    "auto_invoke_fms": true,
+    "json_source": "https://raw.githubusercontent.com/JCFMT2025/fmt-state/main/fmt-state.json",
+    "automation": {
+      "state_syncer": "VD-34",
+      "scheduler": "VD-35"
+    }
+  },
+  "vds": {
+    "VD-01": {
+      "task": "Auto-update: Sync timestamp",
+      "eta": "1h 15m"
+    },
+    "VD-03": {
+      "task": "Monitor GitHub Actions",
+      "status": "Assigned"
+    },
+    "VD-36": {
+      "task": "Audit reporting metrics",
+      "status": "Idle"
+    }
+  },
+  "system_profile": {
+    "purpose": "FMT is a framework management terminal using GPT for predictive modeling, task orchestration, and development tracking.",
+    "memory_policy": "This system uses no GPT memory — fmt-state.json is the sole source of truth.",
+    "update_frequency": "Auto-sync every hour or on data change via GitHub Actions.",
+    "vd_autoscan_enabled": true,
+    "vd_range_max": 100,
+    "automation_status": "Live — all scheduling and sync handled by VD-34 and VD-35.",
+    "integrity_policy": "All VD changes must be reflected here; GPT sessions use only this file."
+  },
+  "vd_41_log": [
+    {
+      "timestamp": "2025-04-24T14:48:38Z",
+      "cycle": 1,
+      "reassignments": [
+        {
+          "vd": "VD-03",
+          "from": "Idle",
+          "to": "Monitor GitHub Actions",
+          "reason": "Previously idle — reassigned for utility monitoring"
+        }
+      ],
+      "notes": "VD-41 snapshot completed with full audit. No anomalies detected."
+    }
+  ],
+  "roadmap": {
+    "next_milestone": "FMT Mobile/Web UI integration",
+    "planned_releases": [
+      "v8.0",
+      "v8.1-beta",
+      "v9.0"
     ],
-    "notes": "VD-41 snapshot completed with full audit. No anomalies detected."
+    "feature_targets": [
+      "Live fixture + odds integration via FMS",
+      "Audit viewer UI for VD logs",
+      "User override tools for live task shifts"
+    ]
   }
-],
-"roadmap": {
-  "next_milestone": "FMT Mobile/Web UI integration",
-  "planned_releases": ["v8.0", "v8.1-beta", "v9.0"],
-  "feature_targets": [
-    "Live fixture + odds integration via FMS",
-    "Audit viewer UI for VD logs",
-    "User override tools for live task shifts"
-  ]
 }
