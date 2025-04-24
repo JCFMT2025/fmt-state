@@ -1,20 +1,23 @@
-on:
-  schedule:
-    - cron: '0 * * * *'  # Every hour on the hour (UTC)
-  workflow_dispatch:
-  push:
-    paths:
-      - fmt-state.json
-name: Auto Sync FMT JSON
+name: Auto Sync FMT JSON + VD-41 Cycle
 
 on:
   workflow_dispatch:
+    inputs:
+      force_vd_41_cycle:
+        description: 'Trigger VD-41 reassignment manually'
+        required: false
+        default: 'false'
+  schedule:
+    - cron: '0 * * * *'  # Runs every hour
   push:
     paths:
       - fmt-state.json
+
+permissions:
+  contents: write
 
 jobs:
-  update_timestamp:
+  fmt_json_sync:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -23,29 +26,37 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Show Original JSON File
-        run: cat fmt-state.json
+      - name: Show Current Timestamp
+        run: jq '.metadata.last_updated' fmt-state.json
 
-      - name: Attempt jq Timestamp Injection (with verbose logs)
+      - name: Update Timestamp in JSON
         run: |
-          echo "Preparing timestamp update..."
           TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          echo "Timestamp to inject: $TS"
-          echo "Running jq now..."
-          jq --arg ts "$TS" '.metadata.last_updated = $ts' fmt-state.json > tmp.json || {
-            echo "❌ JQ FAILED"
-            exit 1
-          }
-          echo "JQ succeeded"
-          mv tmp.json fmt-state.json
-          cat fmt-state.json
+          OLD_TS=$(jq -r '.metadata.last_updated' fmt-state.json)
+          echo "New timestamp: $TS"
+          if [ "$TS" != "$OLD_TS" ]; then
+            jq --arg ts "$TS" '.metadata.last_updated = $ts' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+          else
+            echo "Timestamp unchanged. Forcing overwrite."
+            jq --arg ts "$TS" '.metadata.last_updated = $ts' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+          fi
 
-      - name: Commit and Push
+      - name: Commit and Push if Changed
         run: |
           git config user.name "fmt-bot"
           git config user.email "bot@fmt.dev"
           git add fmt-state.json
-          git diff --cached --quiet || git commit -m "Auto-update: Sync timestamp"
+          git diff --cached --quiet || git commit -m "Auto-sync: Timestamp or structure update"
           git push
-permissions:
-  contents: write
+
+  vd_41_manual_trigger:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.force_vd_41_cycle == 'true' }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Trigger VD-41 Reassignment
+        run: |
+          echo "✅ Manual VD-41 reassignment cycle triggered."
+          # Placeholder for future: add reassignment logic here or via external hook.
