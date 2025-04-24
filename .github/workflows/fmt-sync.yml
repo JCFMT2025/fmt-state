@@ -26,9 +26,17 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
+      - name: Validate JSON Format Before VD Scan
+        run: |
+          if ! jq empty fmt-state.json; then
+            echo "❌ fmt-state.json is not valid JSON"
+            exit 5
+          else
+            echo "✅ JSON structure is valid"
+          fi
+
       - name: Detect and Add New VDs to JSON
         run: |
-          echo "🔍 Scanning for untracked VDs..."
           known_vds=$(jq -r '.vds | keys[]' fmt-state.json)
           for i in $(seq 1 100); do
             vd_id=$(printf "VD-%02d" $i)
@@ -68,4 +76,4 @@ jobs:
       - name: Trigger VD-41 Reassignment
         run: |
           echo "✅ Manual VD-41 reassignment cycle triggered."
-          # Placeholder for VD-41 reassignment logic if needed
+          # Placeholder: insert logic if needed
