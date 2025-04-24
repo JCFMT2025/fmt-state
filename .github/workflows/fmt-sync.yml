@@ -40,3 +40,5 @@ jobs:
           git add fmt-state.json
           git diff --cached --quiet || git commit -m "Auto-update: Sync timestamp"
           git push
+permissions:
+  contents: write
