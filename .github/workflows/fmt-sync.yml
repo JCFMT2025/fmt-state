@@ -30,7 +30,7 @@ jobs:
         run: |
           echo "🔍 Scanning for untracked VDs..."
           known_vds=$(jq -r '.vds | keys[]' fmt-state.json)
-          for i in $(seq 1 60); do
+          for i in $(seq 1 100); do
             vd_id=$(printf "VD-%02d" $i)
             if ! echo "$known_vds" | grep -q "$vd_id"; then
               echo "➕ Adding $vd_id to JSON"
