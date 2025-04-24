@@ -1,7 +1,7 @@
 {
   "metadata": {
     "system": "FMT (Framework Management Terminal)",
-    "last_updated": "2025-04-24T14:48:38Z",
+    "last_updated": "2025-04-24T14:49:50Z",
     "version": "v7.4",
     "next_version_planned": "v8.0",
     "state_sync": "enabled",
@@ -26,6 +26,394 @@
     },
     "VD-36": {
       "task": "Audit reporting metrics",
+      "status": "Idle"
+    },
+    "VD-02": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-04": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-05": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-06": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-07": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-08": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-09": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-10": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-11": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-12": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-13": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-14": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-15": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-16": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-17": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-18": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-19": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-20": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-21": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-22": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-23": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-24": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-25": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-26": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-27": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-28": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-29": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-30": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-31": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-32": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-33": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-34": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-35": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-37": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-38": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-39": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-40": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-41": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-42": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-43": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-44": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-45": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-46": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-47": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-48": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-49": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-50": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-51": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-52": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-53": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-54": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-55": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-56": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-57": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-58": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-59": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-60": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-61": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-62": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-63": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-64": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-65": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-66": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-67": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-68": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-69": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-70": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-71": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-72": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-73": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-74": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-75": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-76": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-77": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-78": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-79": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-80": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-81": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-82": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-83": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-84": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-85": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-86": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-87": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-88": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-89": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-90": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-91": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-92": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-93": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-94": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-95": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-96": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-97": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-98": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-99": {
+      "task": "Pending Assignment",
+      "status": "Idle"
+    },
+    "VD-100": {
+      "task": "Pending Assignment",
       "status": "Idle"
     }
   },
