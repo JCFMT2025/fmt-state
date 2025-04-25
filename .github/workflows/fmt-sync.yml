@@ -8,7 +8,7 @@ on:
         required: false
         default: 'false'
   schedule:
-    - cron: '0 * * * *'  # Every hour UTC
+    - cron: '0 * * * *'
   push:
     paths:
       - fmt-state.json
@@ -26,16 +26,14 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Validate JSON Format Before VD Scan
+      - name: Validate JSON Format
         run: |
           if ! jq empty fmt-state.json; then
             echo "❌ fmt-state.json is not valid JSON"
             exit 5
-          else
-            echo "✅ JSON structure is valid"
           fi
 
-      - name: Detect and Add New VDs to JSON
+      - name: Detect and Add New VDs
         run: |
           known_vds=$(jq -r '.vds | keys[]' fmt-state.json)
           for i in $(seq 1 100); do
@@ -46,24 +44,42 @@ jobs:
             fi
           done
 
-      - name: Update Timestamp in JSON
+      - name: Run VD-41 Audit & Reassignment
         run: |
-          TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          OLD_TS=$(jq -r '.metadata.last_updated' fmt-state.json)
-          echo "New timestamp: $TS"
-          if [ "$TS" != "$OLD_TS" ]; then
-            jq --arg ts "$TS" '.metadata.last_updated = $ts' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+          echo "🔎 Starting VD-41 reassignment cycle..."
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          LOG='{"timestamp":"'$TIMESTAMP'","cycle":"auto","reassignments":[],"notes":"Cycle completed."}'
+          updated=false
+          mapfile -t ids < <(jq -r '.vds | keys[]' fmt-state.json)
+          for id in "${ids[@]}"; do
+            task=$(jq -r --arg id "$id" '.vds[$id].task' fmt-state.json)
+            status=$(jq -r --arg id "$id" '.vds[$id].status' fmt-state.json)
+            if [[ "$task" == "Pending Assignment" && "$status" == "Idle" ]]; then
+              echo "♻️ Reassigning $id"
+              jq --arg id "$id" '.vds[$id].task = "Reassigned by VD-41"' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+              jq --arg id "$id" '.vds[$id].status = "Reassigned"' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+              LOG=$(echo "$LOG" | jq --arg id "$id" '.reassignments += [{"vd":$id,"reason":"Idle with no task"}]')
+              updated=true
+            fi
+          done
+          if [ "$updated" = true ]; then
+            jq --argjson entry "$LOG" '.vd_41_log += [$entry]' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+            echo "📦 VD-41 log updated."
           else
-            echo "Timestamp unchanged. Forcing overwrite."
-            jq --arg ts "$TS" '.metadata.last_updated = $ts' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+            echo "✅ No reassignments needed."
           fi
 
-      - name: Commit and Push if Changed
+      - name: Update Timestamp
+        run: |
+          TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          jq --arg ts "$TS" '.metadata.last_updated = $ts' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+
+      - name: Commit and Push
         run: |
           git config user.name "fmt-bot"
           git config user.email "bot@fmt.dev"
           git add fmt-state.json
-          git diff --cached --quiet || git commit -m "Auto-sync: Timestamp or structure update"
+          git diff --cached --quiet || git commit -m "Auto-sync: Timestamp and VD-41 audit"
           git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
 
   vd_41_manual_trigger:
@@ -73,7 +89,5 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Trigger VD-41 Reassignment
-        run: |
-          echo "✅ Manual VD-41 reassignment cycle triggered."
-          # Placeholder: insert logic if needed
+      - name: Re-run Shared VD-41 Logic
+        run: echo "↪️ Manual trigger will be linked to audit logic in future update."
