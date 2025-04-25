@@ -44,6 +44,23 @@ jobs:
             fi
           done
 
+      - name: Suggest Protection for Sensitive Tasks
+        run: |
+          echo "🔍 Checking for VDs that may require protection..."
+          autosuggest=$(jq -r '.protection_policy.auto_protect_enabled // false' fmt-state.json)
+          keywords=$(jq -r '.protection_policy.suggest_keywords[]?' fmt-state.json)
+          mapfile -t ids < <(jq -r '.vds | keys[]' fmt-state.json)
+
+          for id in "${ids[@]}"; do
+            task=$(jq -r --arg id "$id" '.vds[$id].task' fmt-state.json)
+            protected=$(jq -r --arg id "$id" '.vds[$id].protected // false' fmt-state.json)
+            for kw in $keywords; do
+              if [[ "$task" == *"$kw"* && "$protected" != "true" ]]; then
+                echo "🟡 Suggestion: $id is assigned to '$task' — consider setting 'protected: true'"
+              fi
+            done
+          done
+
       - name: Run VD-41 Audit & Reassignment
         run: |
           echo "🔎 Starting VD-41 reassignment cycle..."
@@ -54,13 +71,11 @@ jobs:
           for id in "${ids[@]}"; do
             task=$(jq -r --arg id "$id" '.vds[$id].task' fmt-state.json)
             status=$(jq -r --arg id "$id" '.vds[$id].status' fmt-state.json)
-
             is_protected=$(jq -r --arg id "$id" '.vds[$id].protected // false' fmt-state.json)
             if [[ "$is_protected" == "true" ]]; then
               echo "🛡️ Skipping protected $id"
               continue
             fi
-
             if [[ "$task" == "Pending Assignment" && "$status" == "Idle" ]]; then
               echo "♻️ Reassigning $id"
               jq --arg id "$id" '.vds[$id].task = "Reassigned by VD-41"' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
