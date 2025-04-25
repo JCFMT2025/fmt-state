@@ -154,13 +154,15 @@
       "status": "Reassigned"
     },
     "VD-34": {
-      "task": "Reassigned by VD-41",
-      "status": "Reassigned"
-    },
-    "VD-35": {
-      "task": "Reassigned by VD-41",
-      "status": "Reassigned"
-    },
+  "task": "FMT State Syncer",
+  "status": "Active",
+  "protected": true
+},
+   "VD-35": {
+  "task": "FMT Scheduler",
+  "status": "Active",
+  "protected": true
+},
     "VD-37": {
       "task": "Reassigned by VD-41",
       "status": "Reassigned"
@@ -178,9 +180,10 @@
       "status": "Reassigned"
     },
     "VD-41": {
-      "task": "Reassigned by VD-41",
-      "status": "Reassigned"
-    },
+  "task": "VD Reassignment Manager",
+  "status": "Active",
+  "protected": true
+},
     "VD-42": {
       "task": "Reassigned by VD-41",
       "status": "Reassigned"
