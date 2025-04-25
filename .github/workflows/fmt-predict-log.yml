@@ -1,10 +1,9 @@
-name: VD-36 FMT Prediction Log
+name: VD-36 FMT Prediction Logger
 
 on:
   workflow_dispatch:
-
-permissions:
-  contents: write
+  schedule:
+    - cron: '25 * * * *' # Runs hourly at minute 25
 
 jobs:
   log_prediction_cycle:
@@ -13,20 +12,28 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Ensure jq is installed
+      - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Append VD-36 prediction log
+      - name: Load and Validate JSON
         run: |
-          echo "📝 Logging prediction execution..."
-          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          LOG_ENTRY="{\"timestamp\":\"$TIMESTAMP\",\"source\":\"VD-36\",\"event\":\"Prediction Execution\"}"
-          jq --argjson entry "$LOG_ENTRY" '.vd_36_log += [$entry]' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+          if ! jq empty fmt-state.json; then
+            echo "❌ fmt-state.json is not valid"
+            exit 1
+          fi
 
-      - name: Commit and Push
+      - name: Log VD-36 Prediction Cycle
+        run: |
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          LOG_ENTRY="{\"timestamp\":\"$TIMESTAMP\",\"status\":\"cycle_triggered\"}"
+
+          jq --argjson entry "$LOG_ENTRY" '.vd_36_log += [$entry]' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+          echo "✅ VD-36 prediction cycle logged"
+
+      - name: Commit and Push Changes
         run: |
           git config user.name "fmt-bot"
           git config user.email "bot@fmt.dev"
           git add fmt-state.json
-          git diff --cached --quiet || git commit -m "VD-36 Log: Prediction execution recorded"
+          git diff --cached --quiet || git commit -m "VD-36 log: Prediction cycle recorded"
           git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
