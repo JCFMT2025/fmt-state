@@ -1,0 +1,52 @@
+name: FMT Dev Phase Tracker
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - fmt-state.json
+
+jobs:
+  track_dev_phases:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Update Dev Phase Log
+        run: |
+          PHASE_ID="PE-P1"
+          TITLE="Prediction Enhancer – Phase 1"
+          VDS='["VD-11","VD-12","VD-13","VD-14","VD-15","VD-16"]'
+
+          # Ensure phase log block exists
+          jq '.dev_phases = (.dev_phases // {})' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+
+          # Add or update the phase entry
+          jq --arg id "$PHASE_ID" \
+             --arg title "$TITLE" \
+             --argjson vds "$VDS" \
+             '.dev_phases[$id] = {
+                "title": $title,
+                "vds_assigned": $vds,
+                "status": "In Progress",
+                "progress": "0%",
+                "eta": "6h",
+                "complete": false
+              }' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+
+          # Protect assigned VDs automatically
+          for vd in $(echo "$VDS" | jq -r '.[]'); do
+            jq --arg id "$vd" '.vds[$id].protected = true' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+          done
+
+      - name: Commit and Push
+        run: |
+          git config user.name "fmt-bot"
+          git config user.email "bot@fmt.dev"
+          git add fmt-state.json
+          git diff --cached --quiet || git commit -m "Dev Phase Tracker: Initialized PE-P1"
+          git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
