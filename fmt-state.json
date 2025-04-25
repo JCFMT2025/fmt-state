@@ -852,5 +852,32 @@
       "Audit viewer UI for VD logs",
       "User override tools for live task shifts"
     ]
+  },
+  "latest_prediction": {
+    "fixture": "Stoke vs Sheffield United",
+    "date": "2025-04-25",
+    "prediction": [
+      {
+        "bet": "Match Odds - Home Win",
+        "confidence": "72.4%"
+      },
+      {
+        "bet": "Both Teams to Score - Yes",
+        "confidence": "66.1%"
+      },
+      {
+        "bet": "Correct Score - 2-1",
+        "confidence": "14.8%"
+      },
+      {
+        "bet": "Total Goals - Over 2.5",
+        "confidence": "63.2%"
+      },
+      {
+        "bet": "Double Chance - Home or Draw",
+        "confidence": "81.9%"
+      }
+    ],
+    "timestamp": "2025-04-25T09:30:36Z"
   }
 }
