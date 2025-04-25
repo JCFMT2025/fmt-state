@@ -62,29 +62,35 @@
       "status": "Reassigned"
     },
     "VD-11": {
-      "task": "Reassigned by VD-41",
-      "status": "Reassigned"
-    },
-    "VD-12": {
-      "task": "Reassigned by VD-41",
-      "status": "Reassigned"
-    },
-    "VD-13": {
-      "task": "Reassigned by VD-41",
-      "status": "Reassigned"
-    },
-    "VD-14": {
-      "task": "Reassigned by VD-41",
-      "status": "Reassigned"
-    },
-    "VD-15": {
-      "task": "Reassigned by VD-41",
-      "status": "Reassigned"
-    },
-    "VD-16": {
-      "task": "Reassigned by VD-41",
-      "status": "Reassigned"
-    },
+  "task": "Prediction Enhancer – Phase 1",
+  "status": "Active",
+  "protected": true
+},
+"VD-12": {
+  "task": "Prediction Enhancer – Phase 1",
+  "status": "Active",
+  "protected": true
+},
+"VD-13": {
+  "task": "Prediction Enhancer – Phase 1",
+  "status": "Active",
+  "protected": true
+},
+"VD-14": {
+  "task": "Prediction Enhancer – Phase 1",
+  "status": "Active",
+  "protected": true
+},
+"VD-15": {
+  "task": "Prediction Enhancer – Phase 1",
+  "status": "Active",
+  "protected": true
+},
+"VD-16": {
+  "task": "Prediction Enhancer – Phase 1",
+  "status": "Active",
+  "protected": true
+},
     "VD-17": {
       "task": "Reassigned by VD-41",
       "status": "Reassigned"
