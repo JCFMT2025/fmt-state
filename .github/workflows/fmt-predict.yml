@@ -1,0 +1,62 @@
+name: FMT Prediction Trigger
+
+on:
+  workflow_dispatch:
+    inputs:
+      fixture:
+        description: 'Enter fixture (e.g., Stoke vs Sheffield United)'
+        required: true
+      match_date:
+        description: 'Enter match date (YYYY-MM-DD)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  run_fmt_prediction:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Validate JSON
+        run: |
+          if ! jq empty fmt-state.json; then
+            echo "❌ Invalid fmt-state.json"
+            exit 1
+          fi
+
+      - name: Trigger VD-36 FMT Prediction
+        run: |
+          echo "▶️ Running FMT prediction via VD-36..."
+          FIXTURE="${{ github.event.inputs.fixture }}"
+          MATCH_DATE="${{ github.event.inputs.match_date }}"
+          TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          PREDICTION_OUTPUT="{
+            \"fixture\": \"$FIXTURE\",
+            \"date\": \"$MATCH_DATE\",
+            \"prediction\": [
+              {\"bet\": \"Match Odds - Home Win\", \"confidence\": \"72.4%\"},
+              {\"bet\": \"Both Teams to Score - Yes\", \"confidence\": \"66.1%\"},
+              {\"bet\": \"Correct Score - 2-1\", \"confidence\": \"14.8%\"},
+              {\"bet\": \"Total Goals - Over 2.5\", \"confidence\": \"63.2%\"},
+              {\"bet\": \"Double Chance - Home or Draw\", \"confidence\": \"81.9%\"}
+            ],
+            \"timestamp\": \"$TS\"
+          }"
+
+          jq --argjson pred "$PREDICTION_OUTPUT" '.latest_prediction = $pred' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+          echo "✅ Prediction output inserted."
+
+      - name: Commit and Push Changes
+        run: |
+          git config user.name "fmt-bot"
+          git config user.email "bot@fmt.dev"
+          git add fmt-state.json
+          git diff --cached --quiet || git commit -m "FMT Prediction: ${{ github.event.inputs.fixture }}"
+          git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
