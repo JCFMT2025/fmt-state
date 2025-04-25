@@ -1,7 +1,7 @@
 {
   "metadata": {
     "system": "FMT (Framework Management Terminal)",
-    "last_updated": "2025-04-25T07:53:47Z",
+    "last_updated": "2025-04-25T08:02:07Z",
     "version": "v7.4",
     "next_version_planned": "v8.0",
     "state_sync": "enabled",
@@ -154,15 +154,15 @@
       "status": "Reassigned"
     },
     "VD-34": {
-  "task": "FMT State Syncer",
-  "status": "Active",
-  "protected": true
-},
-   "VD-35": {
-  "task": "FMT Scheduler",
-  "status": "Active",
-  "protected": true
-},
+      "task": "FMT State Syncer",
+      "status": "Active",
+      "protected": true
+    },
+    "VD-35": {
+      "task": "FMT Scheduler",
+      "status": "Active",
+      "protected": true
+    },
     "VD-37": {
       "task": "Reassigned by VD-41",
       "status": "Reassigned"
@@ -180,10 +180,10 @@
       "status": "Reassigned"
     },
     "VD-41": {
-  "task": "VD Reassignment Manager",
-  "status": "Active",
-  "protected": true
-},
+      "task": "VD Reassignment Manager",
+      "status": "Active",
+      "protected": true
+    },
     "VD-42": {
       "task": "Reassigned by VD-41",
       "status": "Reassigned"
