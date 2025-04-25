@@ -1,0 +1,20 @@
+name: VD-36 Manual Trigger Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run_vd36_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Load and Echo VD-36 Task
+        run: |
+          echo "Simulating VD-36: FMT Prediction Executor"
+          echo "Current JSON source: $(curl -s https://raw.githubusercontent.com/JCFMT2025/fmt-state/main/fmt-state.json | jq '.metadata.system')"
+          echo "🔍 Checking prediction logic..."
+
+          # TEMP: Simulate log writeback or echo for visibility
+          echo "✅ VD-36 prediction module triggered manually."
