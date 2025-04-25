@@ -54,6 +54,11 @@ jobs:
           for id in "${ids[@]}"; do
             task=$(jq -r --arg id "$id" '.vds[$id].task' fmt-state.json)
             status=$(jq -r --arg id "$id" '.vds[$id].status' fmt-state.json)
+            is_protected=$(jq -r --arg id "$id" '.vds[$id].protected // false' fmt-state.json)
+if [[ "$is_protected" == "true" ]]; then
+  echo "🛡️ Skipping protected $id"
+  continue
+fi
             if [[ "$task" == "Pending Assignment" && "$status" == "Idle" ]]; then
               echo "♻️ Reassigning $id"
               jq --arg id "$id" '.vds[$id].task = "Reassigned by VD-41"' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
