@@ -39,4 +39,5 @@ jobs:
           git config user.email "bot@fmt.dev"
           git add fmt-state.json
           git diff --cached --quiet || git commit -m "Dev Tracker: Auto-log active development VDs"
-          git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
+          git push --force https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
+
