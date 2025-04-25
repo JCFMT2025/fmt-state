@@ -1,0 +1,42 @@
+name: Development Phase Tracker
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"  # Every 30 minutes
+  workflow_dispatch:
+
+jobs:
+  track_active_development:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Track Active Development VDs
+        run: |
+          echo "Scanning active development VDs..."
+          TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          entries=()
+
+          mapfile -t devs < <(jq -r '.vds | to_entries[] | select(.value.status == "Active" and (.value.task | test("Phase|Enhancer|Module"; "i"))) | .key' fmt-state.json)
+          
+          for id in "${devs[@]}"; do
+            task=$(jq -r --arg id "$id" '.vds[$id].task' fmt-state.json)
+            entry="{\"vd\":\"$id\",\"task\":\"$task\"}"
+            entries+=("$entry")
+          done
+
+          log_entry="{\"timestamp\":\"$TS\",\"active_development\":[$(IFS=,; echo "${entries[*]}")]}"
+          
+          jq --argjson entry "$log_entry" '.dev_tracker_log += [$entry]' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+
+      - name: Commit Log Update
+        run: |
+          git config user.name "fmt-bot"
+          git config user.email "bot@fmt.dev"
+          git add fmt-state.json
+          git diff --cached --quiet || git commit -m "Dev Tracker: Auto-log active development VDs"
+          git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
