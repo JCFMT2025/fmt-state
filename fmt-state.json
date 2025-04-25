@@ -1053,5 +1053,6 @@
     "progress": "100%",
     "status": "Active",
     "impact_ready": false
-  }
+  },
+  "impact_log": []
 }
