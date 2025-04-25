@@ -1,0 +1,42 @@
+name: Track Prediction Enhancer Phase
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  track_phase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Log Phase to JSON
+        run: |
+          echo "Logging Prediction Enhancer Phase 1..."
+          TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          jq '.prediction_phase_log = (.prediction_phase_log // []) + [{
+            "phase": "Prediction Enhancer – Phase 1",
+            "assigned_vds": ["VD-11", "VD-12", "VD-13", "VD-14", "VD-15", "VD-16"],
+            "status": "In Progress",
+            "started": "'"$TS"'",
+            "notes": "Enhancement phase initialized and tracked"
+          }]' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+
+          for id in VD-11 VD-12 VD-13 VD-14 VD-15 VD-16; do
+            jq --arg id "$id" '.vds[$id].protected = true' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+          done
+
+      - name: Commit changes
+        run: |
+          git config user.name "fmt-bot"
+          git config user.email "bot@fmt.dev"
+          git add fmt-state.json
+          git commit -m "Tracking Prediction Enhancer Phase 1 and applying protection"
+          git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
