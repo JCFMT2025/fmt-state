@@ -967,5 +967,22 @@
       "started": "2025-04-25T16:32:49Z",
       "notes": "Enhancement phase initialized and tracked"
     }
-  ]
+  ],
+  "dev_phases": {
+    "PE-P1": {
+      "title": "Prediction Enhancer – Phase 1",
+      "vds_assigned": [
+        "VD-11",
+        "VD-12",
+        "VD-13",
+        "VD-14",
+        "VD-15",
+        "VD-16"
+      ],
+      "status": "In Progress",
+      "progress": "0%",
+      "eta": "6h",
+      "complete": false
+    }
+  }
 }
