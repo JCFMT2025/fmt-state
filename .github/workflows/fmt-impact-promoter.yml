@@ -1,12 +1,10 @@
-name: FMT Impact Promoter
+name: Impact Promoter
 
 on:
-  schedule:
-    - cron: "*/30 * * * *"  # Every 30 minutes
   workflow_dispatch:
 
 jobs:
-  promote_impact_ready:
+  promote_enhancement:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -15,45 +13,14 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Promote Completed Phases to Impact Ready
+      - name: Set Impact Ready to True
         run: |
-          echo "Scanning for completed phases to promote to impact_ready..."
-          TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          updated=false
+          jq '.enhancement_status.impact_ready = true' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
 
-          # Ensure impact_log exists
-          jq '.impact_log = (.impact_log // [])' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
-
-          # Iterate over dev_phases
-          for phase_id in $(jq -r '.dev_phases | keys[]' fmt-state.json); do
-            progress=$(jq -r --arg id "$phase_id" '.dev_phases[$id].progress' fmt-state.json)
-            complete=$(jq -r --arg id "$phase_id" '.dev_phases[$id].complete' fmt-state.json)
-            impact_ready=$(jq -r --arg id "$phase_id" '.dev_phases[$id].impact_ready // "false"' fmt-state.json)
-
-            if [[ "$progress" == "100%" && "$complete" == "true" && "$impact_ready" != "true" ]]; then
-              echo "Promoting phase $phase_id to impact_ready..."
-
-              # Set impact_ready to true
-              jq --arg id "$phase_id" '.dev_phases[$id].impact_ready = true' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
-
-              # Append to impact_log
-              jq --arg ts "$TS" --arg id "$phase_id" '.impact_log += [{"timestamp": $ts, "phase": $id, "action": "promoted_to_impact_ready"}]' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
-
-              updated=true
-            fi
-          done
-
-          if [ "$updated" = true ]; then
-            echo "Phases promoted to impact_ready."
-          else
-            echo "No phases eligible for promotion at this time."
-          fi
-
-    - name: Commit and Push with Force
-  run: |
-    git config user.name "fmt-bot"
-    git config user.email "bot@fmt.dev"
-    git add fmt-state.json
-    git commit -m "Impact Promoter: Marked PE-P1 as ready"
-    git push --force https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
-
+      - name: Commit and Push with Force
+        run: |
+          git config user.name "fmt-bot"
+          git config user.email "bot@fmt.dev"
+          git add fmt-state.json
+          git commit -m "Impact Promoter: Marked PE-P1 as ready"
+          git push --force https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
