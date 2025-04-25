@@ -25,9 +25,10 @@
       "status": "Assigned"
     },
     "VD-36": {
-      "task": "Audit reporting metrics",
-      "status": "Idle"
-    },
+  "task": "FMT Prediction Executor",
+  "status": "Active",
+  "protected": true
+},
     "VD-02": {
       "task": "Reassigned by VD-41",
       "status": "Reassigned"
