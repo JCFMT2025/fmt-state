@@ -888,6 +888,11 @@
     ],
     "timestamp": "2025-04-25T09:30:36Z"
   },
+  "pending_fixture": {
+  "fixture": "",
+  "date": "",
+  "status": "none"
+},
   "vd_36_log": [
     {
       "timestamp": "2025-04-25T10:11:25Z",
