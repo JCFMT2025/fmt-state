@@ -1,0 +1,30 @@
+name: FMT Auto-Set Pending Fixture
+
+on:
+  workflow_dispatch:
+    inputs:
+      fixture:
+        description: 'Fixture to predict (e.g., "Southampton vs Fulham")'
+        required: true
+        type: string
+
+jobs:
+  update-pending-fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Read and update pending fixture
+        run: |
+          jq --arg fixture "${{ github.event.inputs.fixture }}" '
+            .pending_fixture = $fixture
+          ' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "fmt-bot"
+          git config user.email "fmt-bot@users.noreply.github.com"
+          git add fmt-state.json
+          git commit -m "Set pending fixture to: ${{ github.event.inputs.fixture }}"
+          git push
