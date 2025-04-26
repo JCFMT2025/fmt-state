@@ -1,11 +1,12 @@
-name: Impact Promoter
+name: FMT Impact Promoter
 
 on:
   workflow_dispatch:
 
 jobs:
-  promote_enhancement:
+  promote_impact_phase:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -13,15 +14,25 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Set Impact Ready to True
-  run: |
-    jq '.enhancement_status.impact_ready = true' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
-    jq '.enhancement_status.status = "Completed"' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+      - name: Promote Impact to True and Update Status
+        run: |
+          # Ensure enhancement_status block exists
+          jq '.enhancement_status = (.enhancement_status // {})' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
 
-      - name: Commit and Push with Force
+          # Set impact_ready to true
+          jq '.enhancement_status.impact_ready = true' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+
+          # Set status to Completed
+          jq '.enhancement_status.status = "Completed"' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+
+          # Update timestamp
+          NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          jq --arg ts "$NOW" '.enhancement_status.timestamp = $ts' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+
+      - name: Commit and Push Changes
         run: |
           git config user.name "fmt-bot"
           git config user.email "bot@fmt.dev"
           git add fmt-state.json
-          git commit -m "Impact Promoter: Marked PE-P1 as ready"
-          git push --force https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
+          git diff --cached --quiet || git commit -m "Impact Promoter: Enhancement phase completed and ready"
+          git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main --force
