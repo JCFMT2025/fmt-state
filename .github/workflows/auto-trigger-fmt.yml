@@ -1,0 +1,34 @@
+name: Auto Trigger FMT
+on:
+  workflow_dispatch:
+    inputs:
+      fixture:
+        description: 'Fixture to predict (e.g., Brighton vs West Ham)'
+        required: true
+        type: string
+
+jobs:
+  run_fmt_prediction:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Trigger FMT Prediction
+        run: |
+          echo "Invoking VD-36 (FMT Prediction Executor)"
+          echo "{\"fixture\": \"${{ github.event.inputs.fixture }}\"}" > fmt-request.json
+          # Here simulate FMT trigger (could be a CLI call or VD-36 listening to fmt-request.json push)
+
+      - name: Commit FMT Request
+        run: |
+          git config user.name "fmt-bot"
+          git config user.email "fmt-bot@users.noreply.github.com"
+          git add fmt-request.json
+          git commit -m "New FMT Request: ${{ github.event.inputs.fixture }}"
+          git push
