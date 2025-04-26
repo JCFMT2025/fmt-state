@@ -1,0 +1,23 @@
+name: FMT Auto Cleanup
+
+on:
+  workflow_run:
+    workflows: ["FMT Auto Trigger"]
+    types:
+      - completed
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Delete Auto Trigger Workflow
+        run: |
+          git config user.name "fmt-bot"
+          git config user.email "bot@fmt.local"
+          rm -f .github/workflows/fmt-auto-trigger.yml
+          git add .github/workflows/fmt-auto-trigger.yml || true
+          git commit -m "Auto-cleanup: Remove used FMT Auto Trigger" || echo "Nothing to commit"
+          git push
