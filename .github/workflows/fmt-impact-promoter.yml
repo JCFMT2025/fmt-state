@@ -14,8 +14,9 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y jq
 
       - name: Set Impact Ready to True
-        run: |
-          jq '.enhancement_status.impact_ready = true' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+  run: |
+    jq '.enhancement_status.impact_ready = true' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+    jq '.enhancement_status.status = "Completed"' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
 
       - name: Commit and Push with Force
         run: |
