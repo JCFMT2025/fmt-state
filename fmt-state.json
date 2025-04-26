@@ -1600,6 +1600,17 @@
       "progress": "100%",
       "eta": "0h",
       "complete": true
+    },
+    "IP-P2": {
+      "title": "Impact Promoter – Phase 2",
+      "vds_assigned": [
+        "VD-17",
+        "VD-18"
+      ],
+      "status": "In Progress",
+      "progress": "0%",
+      "eta": "6h",
+      "complete": false
     }
   },
   "enhancement_status": {
