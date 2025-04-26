@@ -102,7 +102,7 @@ jobs:
           git config user.email "bot@fmt.dev"
           git add fmt-state.json
           git diff --cached --quiet || git commit -m "Auto-sync: Timestamp and VD-41 audit"
-          git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
+          git push --force https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
 
   vd_41_manual_trigger:
     runs-on: ubuntu-latest
