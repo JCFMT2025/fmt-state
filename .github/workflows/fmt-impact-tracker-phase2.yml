@@ -1,0 +1,45 @@
+name: FMT Impact Promoter Phase 2 Tracker
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"  # Every 30 minutes
+  workflow_dispatch:
+
+jobs:
+  track_impact_promoter_phase2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Update Impact Phase Progress
+        run: |
+          PHASE_ID="IP-P2"
+          CURRENT_PROGRESS="15%" # You can adjust this later manually or automatically if you have a metric
+          ETA="5h 30m"
+
+          # Ensure enhancement_status exists
+          jq '.enhancement_status = (.enhancement_status // {})' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+
+          # Update enhancement_status
+          jq --arg phase "$PHASE_ID" \
+             --arg progress "$CURRENT_PROGRESS" \
+             --arg eta "$ETA" \
+             '.enhancement_status = {
+                "phase": $phase,
+                "timestamp": (now | strftime("%Y-%m-%dT%H:%M:%SZ")),
+                "progress": $progress,
+                "status": "Active",
+                "impact_ready": false
+              }' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+
+      - name: Commit and Push Updates
+        run: |
+          git config user.name "fmt-bot"
+          git config user.email "bot@fmt.dev"
+          git add fmt-state.json
+          git diff --cached --quiet || git commit -m "Impact Promoter Tracker: Updated Phase 2 Progress"
+          git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
