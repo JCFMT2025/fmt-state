@@ -10,9 +10,18 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Verify fmt-state.json Exists
+        run: |
+          if [ ! -f "fmt-state.json" ]; then
+            echo "Error: fmt-state.json not found!"
+            exit 1
+          fi
 
       - name: Promote Impact to True and Update Status
         run: |
