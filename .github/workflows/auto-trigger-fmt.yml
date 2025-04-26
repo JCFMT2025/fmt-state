@@ -32,3 +32,44 @@ jobs:
           git add fmt-request.json
           git commit -m "New FMT Request: ${{ github.event.inputs.fixture }}"
           git push
+name: Auto FMT Executor
+
+on:
+  push:
+    paths:
+      - 'fmt-request.json'
+
+jobs:
+  run-fmt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install jq
+        run: sudo apt-get install jq
+      
+      - name: Read fmt-request.json
+        id: read_request
+        run: |
+          REQUEST=$(cat fmt-request.json)
+          echo "Request: $REQUEST"
+      
+      - name: Run FMT Prediction
+        run: |
+          echo "Executing FMT Prediction based on fmt-request.json trigger"
+          # You can place the FMT CLI or API call here when ready
+
+      - name: Cleanup fmt-request.json
+        run: |
+          echo "Cleaning up request file..."
+          git rm -f fmt-request.json || true
+          git config user.name "fmt-bot"
+          git config user.email "fmt-bot@example.com"
+          git commit -m "Auto-cleanup: Removed processed fmt-request.json" || echo "Nothing to commit"
+          git push || echo "Nothing to push"
