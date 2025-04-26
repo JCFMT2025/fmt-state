@@ -1,0 +1,38 @@
+name: Impact Phase Logger
+
+on:
+  workflow_dispatch:
+
+jobs:
+  log_impact_phase_completion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Log Completed Impact Phase
+        run: |
+          echo "Logging Impact Promoter Phase Completion..."
+          TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          PHASE_NAME="Impact Promoter – Phase 2"
+          COMPLETED_VDS='["VD-17","VD-18"]'
+
+          # Ensure impact_log block exists
+          jq '.impact_log = (.impact_log // [])' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+
+          # Append the impact phase completion entry
+          jq --arg phase "$PHASE_NAME" \
+             --argjson completed_by "$COMPLETED_VDS" \
+             --arg timestamp "$TS" \
+             '.impact_log += [{"phase": $phase, "completed_by": $completed_by, "timestamp": $timestamp, "status": "Success"}]' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+
+      - name: Commit and Push Update
+        run: |
+          git config user.name "fmt-bot"
+          git config user.email "bot@fmt.dev"
+          git add fmt-state.json
+          git diff --cached --quiet || git commit -m "Impact Logger: Recorded Phase 2 Completion"
+          git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
