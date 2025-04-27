@@ -1,9 +1,10 @@
 name: Auto FMT Executor
 
 on:
-  push:
-    paths:
-      - 'fmt-request.json'
+  workflow_run:
+    workflows: ["Auto Trigger FMT"]
+    types:
+      - completed
 
 permissions:
   contents: write
@@ -11,6 +12,7 @@ permissions:
 
 jobs:
   run-fmt:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -32,7 +34,7 @@ jobs:
 
       - name: Execute FMT Prediction
         run: |
-          echo "Executing FMT Prediction based on incoming fmt-request.json trigger"
+          echo "Executing FMT Prediction based on fmt-request.json trigger"
           # Insert FMT CLI or API call when ready
 
       - name: Cleanup fmt-request.json
