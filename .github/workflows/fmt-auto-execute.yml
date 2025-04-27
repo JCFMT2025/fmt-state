@@ -1,17 +1,20 @@
 name: Auto FMT Executor
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'fmt-request.json'
+  workflow_run:
+    workflows: ["Auto Trigger FMT"]
+    types:
+      - completed
+
+permissions:
+  contents: write
 
 jobs:
   run-fmt:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repo
+      - name: Checkout repo
         uses: actions/checkout@v4
       
       - name: Set up Node.js
@@ -21,18 +24,17 @@ jobs:
 
       - name: Install jq
         run: sudo apt-get install jq
-
+      
       - name: Read fmt-request.json
         id: read_request
         run: |
-          echo "Reading fmt-request.json..."
           REQUEST=$(cat fmt-request.json)
           echo "Loaded Request: $REQUEST"
 
       - name: Execute FMT Prediction
         run: |
           echo "Executing FMT Prediction based on incoming fmt-request.json trigger"
-          # Insert FMT CLI/API call here
+          # (Insert FMT CLI/API call here if ready)
 
       - name: Cleanup fmt-request.json
         run: |
