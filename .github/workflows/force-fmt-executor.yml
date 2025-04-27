@@ -1,0 +1,34 @@
+name: Force FMT Executor
+
+on:
+  workflow_dispatch:
+    inputs:
+      fixture:
+        description: 'Fixture to predict (e.g., Flamengo vs Corinthians)'
+        required: true
+        type: string
+
+jobs:
+  trigger-fmt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Create FMT Request
+        run: |
+          echo "{\"fixture\": \"${{ github.event.inputs.fixture }}\", \"force_run\": true, \"scan_all_markets\": true}" > fmt-request.json
+          echo "Created fmt-request.json with force_run enabled."
+
+      - name: Commit and Push Request
+        run: |
+          git config user.name "fmt-bot"
+          git config user.email "fmt-bot@users.noreply.github.com"
+          git add fmt-request.json
+          git commit -m "Force FMT Prediction Request: ${{ github.event.inputs.fixture }}"
+          git push
