@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       fixture:
-        description: 'Fixture to predict (e.g., Brighton vs West Ham)'
+        description: 'Fixture to predict (e.g., Napoli vs Torino)'
         required: true
         type: string
 
@@ -23,12 +23,12 @@ jobs:
       - name: Trigger FMT Prediction
         run: |
           echo "Invoking VD-36 (FMT Prediction Executor)"
-          echo "{\"fixture\": \"${{ github.event.inputs.fixture }}\"}" > fmt-request.json
+          echo "{\"fixture\": \"${{ github.event.inputs.fixture }}\", \"scan_all_markets\": true}" > fmt-request.json
 
       - name: Commit FMT Request
         run: |
           git config user.name "fmt-bot"
           git config user.email "fmt-bot@users.noreply.github.com"
           git add fmt-request.json
-          git commit -m "New FMT Request: ${{ github.event.inputs.fixture }}" || echo "Nothing to commit"
+          git commit -m "New FMT Request (Full Market Scan): ${{ github.event.inputs.fixture }}"
           git push
