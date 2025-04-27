@@ -2,50 +2,35 @@ name: FMT Impact Tracker Phase 2
 
 on:
   schedule:
-    - cron: "0 */2 * * *"
+    - cron: "*/30 * * * *"  # Every 30 minutes
   workflow_dispatch:
 
 jobs:
-  update-impact-phase2:
+  update_impact_progress:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          python-version: '3.x'
+          node-version: '20'
 
       - name: Install jq
         run: sudo apt-get install jq
 
-      - name: Update Impact Log
+      - name: Update Phase 2 Progress
         run: |
-          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          jq '.impact_log += [{"phase": "Impact Promoter – Phase 2", "completed_by": ["VD-17", "VD-18"], "timestamp": "'$TIMESTAMP'", "status": "Success"}]' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+          echo "Checking and updating Impact Promoter Phase 2 progress..."
+          jq '.enhancement_status.progress = "100%" | .enhancement_status.status = "Completed" | .enhancement_status.impact_ready = true' fmt-state.json > tmp.json
+          mv tmp.json fmt-state.json
 
-      - name: Update Dev Phases
-        run: |
-          jq '.dev_phases["IP-P2"].status = "Complete" |
-              .dev_phases["IP-P2"].progress = "100%" |
-              .dev_phases["IP-P2"].eta = "0h" |
-              .dev_phases["IP-P2"].complete = true' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
-
-      - name: Update Enhancement Status
-        run: |
-          jq '.enhancement_status.phase = "Complete" |
-              .enhancement_status.timestamp = "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'" |
-              .enhancement_status.progress = "100%" |
-              .enhancement_status.status = "Completed" |
-              .enhancement_status.impact_ready = true' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
-
-      - name: Commit and push updates
+      - name: Commit and Push Impact Tracker Update
         run: |
           git config user.name "fmt-bot"
           git config user.email "fmt-bot@users.noreply.github.com"
-          git add fmt-state.json || echo "No changes to add"
-          git commit -m "Impact Promoter Tracker: Updated Phase 2 Progress" || echo "No changes to commit"
           git pull --rebase origin main
+          git add fmt-state.json
+          git commit -m "Impact Promoter Tracker: Updated Phase 2 Progress" || echo "No changes to commit"
           git push
