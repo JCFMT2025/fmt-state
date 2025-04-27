@@ -1,0 +1,34 @@
+name: Auto Boot Sync
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["FMT Command Hub"]
+    types:
+      - completed
+
+permissions:
+  contents: read
+
+concurrency:
+  group: auto-boot-sync
+  cancel-in-progress: true
+
+jobs:
+  boot-sync:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Pull Latest fmt-state.json
+        run: |
+          git fetch origin main
+          git checkout main
+          git pull origin main
+
+      - name: Confirm Live Sync
+        run: |
+          echo "::notice title=Auto Boot Sync::FMT Command Hub successfully synced at $(date -u)"
