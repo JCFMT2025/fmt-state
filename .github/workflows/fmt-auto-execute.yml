@@ -1,18 +1,12 @@
 name: Auto FMT Executor
 
 on:
-  workflow_run:
-    workflows: ["Auto Trigger FMT"]
-    types:
-      - completed
-
-permissions:
-  contents: write
-  actions: write
+  push:
+    paths:
+      - 'fmt-request.json'
 
 jobs:
   run-fmt:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -32,17 +26,23 @@ jobs:
           REQUEST=$(cat fmt-request.json)
           echo "Loaded Request: $REQUEST"
 
+      - name: Force FMS Refresh
+        run: |
+          echo ">>> Forcing VD-36 to refresh prediction core..."
+          # Simulate refresh trigger — in real CLI/API, this would re-pull data sources
+          sleep 2  # Simulate quick refresh delay
+          echo ">>> Refresh complete."
+
       - name: Execute FMT Prediction
         run: |
-          echo "Executing FMT Prediction based on fmt-request.json trigger"
-          # Insert FMT CLI or API call when ready
+          echo "Executing FMT Prediction based on freshly refreshed FMS..."
+          # (Insert FMT prediction CLI/API call here if ready)
 
       - name: Cleanup fmt-request.json
-        env:
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          echo "Cleaning up request file..."
           git rm -f fmt-request.json || true
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "fmt-bot"
+          git config user.email "fmt-bot@users.noreply.github.com"
           git commit -m "Auto-cleanup: Removed processed fmt-request.json" || echo "Nothing to commit"
-          git push https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git || echo "Nothing to push"
+          git push || echo "Nothing to push"
