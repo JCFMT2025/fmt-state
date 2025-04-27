@@ -8,7 +8,7 @@ on:
       - 'fmt-request.json'
 
 jobs:
-  run_fmt_prediction:
+  run-fmt:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -20,18 +20,19 @@ jobs:
           node-version: '20'
 
       - name: Install jq
-        run: sudo apt-get install -y jq
+        run: sudo apt-get install jq
 
-      - name: Read FMT Request
+      - name: Read fmt-request.json
         id: read_request
         run: |
+          echo "Reading fmt-request.json..."
           REQUEST=$(cat fmt-request.json)
           echo "Loaded Request: $REQUEST"
 
       - name: Execute FMT Prediction
         run: |
           echo "Executing FMT Prediction based on incoming fmt-request.json trigger"
-          # (Insert FMT prediction CLI/API call here if ready)
+          # Insert FMT CLI/API call here
 
       - name: Cleanup fmt-request.json
         run: |
@@ -40,4 +41,4 @@ jobs:
           git config user.name "fmt-bot"
           git config user.email "fmt-bot@users.noreply.github.com"
           git commit -m "Auto-cleanup: Removed processed fmt-request.json" || echo "Nothing to commit"
-          git push origin main || echo "Nothing to push"
+          git push || echo "Nothing to push"
