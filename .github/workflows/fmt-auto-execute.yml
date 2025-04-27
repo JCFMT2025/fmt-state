@@ -9,37 +9,33 @@ jobs:
   run-fmt:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
+      - name: Checkout Repo
         uses: actions/checkout@v4
       
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          python-version: '3.x'
-      
+          node-version: '20'
+
       - name: Install jq
         run: sudo apt-get install jq
-
+      
       - name: Read fmt-request.json
         id: read_request
         run: |
           REQUEST=$(cat fmt-request.json)
-          echo "Request content: $REQUEST"
-          FIXTURE=$(echo "$REQUEST" | jq -r '.fixture')
-          echo "FIXTURE=$FIXTURE" >> $GITHUB_ENV
+          echo "Loaded Request: $REQUEST"
 
-      - name: Run FMT Prediction
+      - name: Execute FMT Prediction
         run: |
-          echo "Invoking VD-36 FMT Prediction Engine..."
-          echo "Running prediction for: $FIXTURE"
-          # Here you would insert the real command or script to trigger FMT on $FIXTURE
-          # Example (placeholder): python fmt_predictor.py --fixture "$FIXTURE"
+          echo "Executing FMT Prediction based on incoming fmt-request.json trigger"
+          # (Insert FMT prediction CLI/API call here if ready)
 
       - name: Cleanup fmt-request.json
         run: |
-          echo "Cleaning up fmt-request.json..."
+          echo "Cleaning up request file..."
           git rm -f fmt-request.json || true
           git config user.name "fmt-bot"
-          git config user.email "fmt-bot@example.com"
+          git config user.email "fmt-bot@users.noreply.github.com"
           git commit -m "Auto-cleanup: Removed processed fmt-request.json" || echo "Nothing to commit"
           git push || echo "Nothing to push"
