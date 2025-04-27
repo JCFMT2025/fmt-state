@@ -8,6 +8,10 @@ on:
         required: true
         type: string
 
+permissions:
+  contents: write
+  actions: write
+
 jobs:
   run_fmt_prediction:
     runs-on: ubuntu-latest
@@ -26,18 +30,11 @@ jobs:
           echo "{\"fixture\": \"${{ github.event.inputs.fixture }}\", \"scan_all_markets\": true}" > fmt-request.json
 
       - name: Commit and Push FMT Request
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config user.name "fmt-bot"
-          git config user.email "fmt-bot@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add fmt-request.json
           git commit -m "New FMT Request: ${{ github.event.inputs.fixture }}" || echo "Nothing to commit"
-          git push || echo "Nothing to push"
-
-      - name: Wait to ensure GitHub detects the push
-        run: |
-          echo "Waiting briefly to allow GitHub to detect the push..."
-          sleep 10
-
-      - name: Push Again to Trigger Auto-Executor
-        run: |
-          git push || echo "Nothing to push again"
+          git push https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git || echo "Nothing to push"
