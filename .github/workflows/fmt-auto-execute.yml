@@ -2,11 +2,13 @@ name: Auto FMT Executor
 
 on:
   push:
+    branches:
+      - main
     paths:
       - 'fmt-request.json'
 
 jobs:
-  run-fmt:
+  run_fmt_prediction:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -18,9 +20,9 @@ jobs:
           node-version: '20'
 
       - name: Install jq
-        run: sudo apt-get install jq
-      
-      - name: Read fmt-request.json
+        run: sudo apt-get install -y jq
+
+      - name: Read FMT Request
         id: read_request
         run: |
           REQUEST=$(cat fmt-request.json)
@@ -38,4 +40,4 @@ jobs:
           git config user.name "fmt-bot"
           git config user.email "fmt-bot@users.noreply.github.com"
           git commit -m "Auto-cleanup: Removed processed fmt-request.json" || echo "Nothing to commit"
-          git push || echo "Nothing to push"
+          git push origin main || echo "Nothing to push"
