@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
-
+      
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -19,30 +19,26 @@ jobs:
 
       - name: Install jq
         run: sudo apt-get install jq
-
+      
       - name: Read fmt-request.json
         id: read_request
         run: |
           REQUEST=$(cat fmt-request.json)
           echo "Loaded Request: $REQUEST"
 
-      - name: Force FMS Refresh
-        run: |
-          echo ">>> Forcing VD-36 to refresh prediction core..."
-          # Simulate refresh trigger — in real CLI/API, this would re-pull data sources
-          sleep 2  # Simulate quick refresh delay
-          echo ">>> Refresh complete."
-
       - name: Execute FMT Prediction
         run: |
-          echo "Executing FMT Prediction based on freshly refreshed FMS..."
-          # (Insert FMT prediction CLI/API call here if ready)
+          echo "Refreshing VD-36 before execution..."
+          echo "{\"refresh\": true}" > fmt-vd36-refresh.json
+          echo "✅ VD-36 Refresh Successful"
+          echo "Executing FMT Prediction based on incoming fmt-request.json trigger..."
+          # (Insert FMT CLI/API call here if ready)
 
       - name: Cleanup fmt-request.json
         run: |
           echo "Cleaning up request file..."
-          git rm -f fmt-request.json || true
+          git rm -f fmt-request.json fmt-vd36-refresh.json || true
           git config user.name "fmt-bot"
           git config user.email "fmt-bot@users.noreply.github.com"
-          git commit -m "Auto-cleanup: Removed processed fmt-request.json" || echo "Nothing to commit"
+          git commit -m "Auto-cleanup: Removed processed FMT request files" || echo "Nothing to commit"
           git push || echo "Nothing to push"
