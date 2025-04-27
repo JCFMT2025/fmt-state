@@ -862,6 +862,38 @@
       "User override tools for live task shifts"
     ]
   },
+  "patches": {
+  "top5_prediction_enhancer": {
+    "enforce_full_market_validation": true,
+    "allowed_market_categories": [
+      "Match Odds",
+      "Asian Handicap",
+      "Total Goals",
+      "Correct Score",
+      "Cards",
+      "Corners"
+    ],
+    "top5_selection_policy": {
+      "rules": [
+        "must include bets from at least 3 different market categories (if available)",
+        "prioritize bets with highest model confidence first",
+        "strictly sort Top 5 by descending confidence %"
+      ]
+    },
+    "fallback_handling": {
+      "if_fewer_than_5_diversified_bets_available": [
+        "allow similar market duplication, but warn in notes"
+      ],
+      "else": [
+        "prefer diversified categories"
+      ]
+    },
+    "apply_on": [
+      "fmt-auto-execute.yml",
+      "VD-36 prediction logic"
+    ]
+  }
+},
   "latest_prediction": {
     "fixture": "Stoke vs Sheffield United",
     "date": "2025-04-25",
