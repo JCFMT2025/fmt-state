@@ -1,17 +1,12 @@
 name: Auto FMT Executor
 
 on:
-  workflow_run:
-    workflows: ["Auto Trigger FMT"]
-    types:
-      - completed
-
-permissions:
-  contents: write
+  push:
+    paths:
+      - 'fmt-request.json'
 
 jobs:
   run-fmt:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -29,16 +24,18 @@ jobs:
         id: read_request
         run: |
           REQUEST=$(cat fmt-request.json)
-          echo "Loaded Request: $REQUEST"
+          FIXTURE=$(jq -r '.fixture' fmt-request.json)
+          echo "Loaded FMT Request for Fixture: $FIXTURE"
+          echo "FIXTURE=$FIXTURE" >> $GITHUB_ENV
 
       - name: Execute FMT Prediction
         run: |
-          echo "Executing FMT Prediction based on incoming fmt-request.json trigger"
-          # (Insert FMT CLI/API call here if ready)
+          echo "🚀 Executing FMT Prediction for: $FIXTURE"
+          # (Insert your actual FMT prediction CLI/API call here)
 
       - name: Cleanup fmt-request.json
         run: |
-          echo "Cleaning up request file..."
+          echo "🧹 Cleaning up fmt-request.json after execution..."
           git rm -f fmt-request.json || true
           git config user.name "fmt-bot"
           git config user.email "fmt-bot@users.noreply.github.com"
