@@ -1,36 +1,32 @@
-name: FMT Impact Tracker Phase 2
+name: Impact Promoter Tracker Phase 2
 
 on:
   schedule:
-    - cron: "*/30 * * * *"  # Every 30 minutes
+    - cron: '0 * * * *'  # Runs every hour
   workflow_dispatch:
 
 jobs:
-  update_impact_progress:
+  update_impact_tracker:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install jq
-        run: sudo apt-get install jq
-
-      - name: Update Phase 2 Progress
-        run: |
-          echo "Checking and updating Impact Promoter Phase 2 progress..."
-          jq '.enhancement_status.progress = "100%" | .enhancement_status.status = "Completed" | .enhancement_status.impact_ready = true' fmt-state.json > tmp.json
-          mv tmp.json fmt-state.json
-
-      - name: Commit and Push Impact Tracker Update
+      - name: Set up Git
         run: |
           git config user.name "fmt-bot"
           git config user.email "fmt-bot@users.noreply.github.com"
-          git pull --rebase origin main
-          git add fmt-state.json
-          git commit -m "Impact Promoter Tracker: Updated Phase 2 Progress" || echo "No changes to commit"
+
+      - name: Update Impact Tracker
+        run: |
+          echo "[Auto-Update] Refreshing Phase 2 Development Progress..."
+          # Insert your impact tracker update logic here
+          # For example, update a JSON field or generate a report
+
+      - name: Commit and Push Impact Tracker Update
+        run: |
+          git add .
+          git commit -m "Impact Promoter Tracker: Updated Phase 2 Progress" || echo "Nothing to commit"
+          git pull --rebase
           git push
