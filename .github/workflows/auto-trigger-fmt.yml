@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       fixture:
-        description: 'Fixture to predict (e.g., Arsenal vs PSG)'
+        description: 'Fixture to predict (e.g., Athletic Bilbao vs Manchester United)'
         required: true
         type: string
 
@@ -14,11 +14,6 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
 
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
@@ -30,6 +25,8 @@ jobs:
           TEAM_B=$(echo "$FIXTURE" | cut -d'v' -f2 | xargs)
           DATE=$(date -u +"%Y-%m-%d")
 
+          echo "Injecting: $TEAM_A vs $TEAM_B on $DATE"
+
           jq --arg a "$TEAM_A" --arg b "$TEAM_B" --arg d "$DATE" \
             '.pending_fmt_request = { "team_a": $a, "team_b": $b, "date": $d }' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
 
@@ -39,4 +36,4 @@ jobs:
           git config user.email "fmt-bot@users.noreply.github.com"
           git add fmt-state.json
           git commit -m "📥 New pending_fmt_request: ${{ github.event.inputs.fixture }}"
-          git push
+          git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
