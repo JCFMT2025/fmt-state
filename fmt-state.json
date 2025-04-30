@@ -8,6 +8,7 @@
     "force_sync_on_logic": true,
     "use_fmt_prediction": true,
     "full_market_scan_enabled": true,
+    
     "watchdog_ready": true,
     "auto_invoke_fms": true,
     "json_source": "https://raw.githubusercontent.com/JCFMT2025/fmt-state/main/fmt-state.json",
