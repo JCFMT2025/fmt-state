@@ -873,6 +873,16 @@
         "Cards",
         "Corners"
       ],
+"top5_prediction_enhancer": {
+      "enforce_full_market_validation": true,
+      "allowed_market_categories": [
+        "Match Odds",
+        "Asian Handicap",
+        "Total Goals",
+        "Correct Score",
+        "Cards",
+        "Corners"
+      ],
       "top5_selection_policy": {
         "rules": [
           "must include bets from at least 3 different market categories (if available)",
@@ -891,9 +901,11 @@
       "apply_on": [
         "fmt-auto-execute.yml",
         "VD-36 prediction logic"
-      ]
+      ],
+      "include_exotics": true
     }
-  },
+  }
+},
   "latest_prediction": {
     "fixture": "Stoke vs Sheffield United",
     "date": "2025-04-25",
