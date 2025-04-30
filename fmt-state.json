@@ -4476,5 +4476,12 @@
       "timestamp": "2025-04-26T11:29:12Z",
       "status": "Success"
     }
-  ]
+  ],
+  "pending_fmt_request": {
+    "team_a": "Barcelone",
+    "team_b": "s Inter Milan",
+    "date": "2025-30-04",
+    "source": "CommandHub",
+    "trigger_id": "barcelone_vs_s_inter_milan_20253004"
+  }
 }
