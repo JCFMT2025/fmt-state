@@ -44,7 +44,7 @@ jobs:
                 "team_b": $b,
                 "date": $d,
                 "source": "CommandHub",
-                "trigger_id": ($a | ascii_downcase | split(" ") | join("_")) + "_vs_" + ($b | ascii_downcase | split(" ") | join("_")) + "_" + ($d | gsub("-"; ""))
+                "trigger_id": "\($a | ascii_downcase | split(" ") | join("_"))_vs_\($b | ascii_downcase | split(" ") | join("_"))_\($d | gsub("-"; ""))"
               }' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
 
       - name: Commit FMT Request
