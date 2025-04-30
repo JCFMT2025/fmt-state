@@ -20,14 +20,23 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Create FMT Request JSON
-        run: |
-          echo "{\"fixture\": \"${{ github.event.inputs.fixture }}\", \"scan_all_markets\": true}" > fmt-request.json
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Commit FMT Request
+      - name: Inject FMT Request into fmt-state.json
+        run: |
+          FIXTURE="${{ github.event.inputs.fixture }}"
+          TEAM_A=$(echo "$FIXTURE" | cut -d'v' -f1 | xargs)
+          TEAM_B=$(echo "$FIXTURE" | cut -d'v' -f2 | xargs)
+          DATE=$(date -u +"%Y-%m-%d")
+
+          jq --arg a "$TEAM_A" --arg b "$TEAM_B" --arg d "$DATE" \
+            '.pending_fmt_request = { "team_a": $a, "team_b": $b, "date": $d }' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+
+      - name: Commit & Push Updated fmt-state.json
         run: |
           git config user.name "fmt-bot"
           git config user.email "fmt-bot@users.noreply.github.com"
-          git add fmt-request.json
-          git commit -m "New FMT Request: ${{ github.event.inputs.fixture }}"
+          git add fmt-state.json
+          git commit -m "📥 New pending_fmt_request: ${{ github.event.inputs.fixture }}"
           git push
