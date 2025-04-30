@@ -4777,10 +4777,10 @@
     }
   ],
   "pending_fmt_request": {
-    "team_a": "Barcelona",
-    "team_b": "s Inter Milan",
-    "date": "2025-04-30",
-    "source": "CommandHub",
-    "trigger_id": "barcelona_vs_s_inter_milan_20250430"
-  }
+  "team_a": "Barcelona",
+  "team_b": "Inter Milan",
+  "date": "2025-04-30",
+  "source": "CommandHub",
+  "trigger_id": "barcelona_vs_inter_milan_20250430"
+}
 }
