@@ -1,10 +1,10 @@
-name: FMT Prediction Trigger
+name: FMT Prediction Trigger (Live Execution)
 
 on:
   workflow_dispatch:
     inputs:
       fixture:
-        description: 'Enter fixture (e.g., Stoke vs Sheffield United)'
+        description: 'Enter fixture (e.g., Arsenal vs PSG)'
         required: true
       match_date:
         description: 'Enter match date (YYYY-MM-DD)'
@@ -23,40 +23,34 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Validate JSON
+      - name: Parse Fixture into Teams
+        id: parse
         run: |
-          if ! jq empty fmt-state.json; then
-            echo "❌ Invalid fmt-state.json"
-            exit 1
-          fi
-
-      - name: Trigger VD-36 FMT Prediction
-        run: |
-          echo "▶️ Running FMT prediction via VD-36..."
           FIXTURE="${{ github.event.inputs.fixture }}"
-          MATCH_DATE="${{ github.event.inputs.match_date }}"
-          TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          TEAM_A=$(echo "$FIXTURE" | cut -d'v' -f1 | xargs)
+          TEAM_B=$(echo "$FIXTURE" | cut -d'v' -f2 | xargs)
+          echo "team_a=$TEAM_A" >> $GITHUB_OUTPUT
+          echo "team_b=$TEAM_B" >> $GITHUB_OUTPUT
 
-          PREDICTION_OUTPUT="{
-            \"fixture\": \"$FIXTURE\",
-            \"date\": \"$MATCH_DATE\",
-            \"prediction\": [
-              {\"bet\": \"Match Odds - Home Win\", \"confidence\": \"72.4%\"},
-              {\"bet\": \"Both Teams to Score - Yes\", \"confidence\": \"66.1%\"},
-              {\"bet\": \"Correct Score - 2-1\", \"confidence\": \"14.8%\"},
-              {\"bet\": \"Total Goals - Over 2.5\", \"confidence\": \"63.2%\"},
-              {\"bet\": \"Double Chance - Home or Draw\", \"confidence\": \"81.9%\"}
-            ],
-            \"timestamp\": \"$TS\"
-          }"
+      - name: Inject FMT Request into JSON
+        run: |
+          DATE="${{ github.event.inputs.match_date }}"
+          echo "🔧 Injecting FMT request into fmt-state.json..."
+          jq --arg a "${{ steps.parse.outputs.team_a }}" \
+             --arg b "${{ steps.parse.outputs.team_b }}" \
+             --arg d "$DATE" \
+             '.pending_fmt_request = {
+                "team_a": $a,
+                "team_b": $b,
+                "date": $d,
+                "source": "CommandHub",
+                "trigger_id": ($a | ascii_downcase | split(" ") | join("_")) + "_vs_" + ($b | ascii_downcase | split(" ") | join("_")) + "_" + ($d | gsub("-"; ""))
+              }' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
 
-          jq --argjson pred "$PREDICTION_OUTPUT" '.latest_prediction = $pred' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
-          echo "✅ Prediction output inserted."
-
-      - name: Commit and Push Changes
+      - name: Commit FMT Request
         run: |
           git config user.name "fmt-bot"
           git config user.email "bot@fmt.dev"
           git add fmt-state.json
-          git diff --cached --quiet || git commit -m "FMT Prediction: ${{ github.event.inputs.fixture }}"
+          git commit -m "Inject pending FMT request: ${{ github.event.inputs.fixture }}"
           git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
