@@ -37,7 +37,6 @@ jobs:
           DATE=$(jq -r '.pending_fmt_request.date' fmt-state.json)
           echo "Running scan for $TEAM_A vs $TEAM_B on $DATE"
 
-          # Simulated placeholder result
           TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           jq --arg ts "$TS" '.latest_prediction = {
             "timestamp": $ts,
@@ -52,12 +51,14 @@ jobs:
             ]
           } | del(.pending_fmt_request)' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
 
+      - name: Pull Latest to Prevent Conflict
+        run: git pull origin main --rebase
+
       - name: Commit Updated Prediction
         if: steps.check.outputs.found_request == 'true'
         run: |
           git config user.name "fmt-bot"
           git config user.email "bot@fmt.dev"
-          git pull origin main --rebase
           git add fmt-state.json
           git commit -m "✅ FMT Prediction complete"
           git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
