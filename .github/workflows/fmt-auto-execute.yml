@@ -32,7 +32,6 @@ jobs:
         if: steps.check.outputs.found_request == 'true'
         run: |
           echo "🚀 Invoking FMT scan via VD-36..."
-          # Emulate real FMS scan call — replace this with real logic if available
           TEAM_A=$(jq -r '.pending_fmt_request.team_a' fmt-state.json)
           TEAM_B=$(jq -r '.pending_fmt_request.team_b' fmt-state.json)
           DATE=$(jq -r '.pending_fmt_request.date' fmt-state.json)
@@ -58,6 +57,7 @@ jobs:
         run: |
           git config user.name "fmt-bot"
           git config user.email "bot@fmt.dev"
+          git pull origin main --rebase
           git add fmt-state.json
           git commit -m "✅ FMT Prediction complete"
           git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
