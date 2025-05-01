@@ -13,21 +13,20 @@ on:
         description: "Competition"
         required: true
       date:
-        description: "Fixture date"
+        description: "Fixture date (YYYY-MM-DD)"
         required: true
 
 jobs:
   run-fmt-chain:
     name: Run FMT Core Chain
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
+      - name: 📥 Checkout repository
         uses: actions/checkout@v3
 
-      - name: Format fixture filter
-        id: format
+      - name: 🛠 Create fixture-input.json
         run: |
-          echo "Creating fixture filter..."
           echo '{
             "fixture_filter": {
               "date": "${{ github.event.inputs.date }}",
@@ -37,12 +36,15 @@ jobs:
             }
           }' > fixture-input.json
 
+          echo "✅ Created fixture-input.json:"
           cat fixture-input.json
 
-      - name: Trigger internal FMT YAML
+      - name: 🚀 Run FMT Engine via Python Script
         run: |
-          echo "⚙️ Running internal chain using fixture-input.json"
-          # 🔧 Replace this line with your real internal trigger
-          # Example: python3 run-fmt.py fixture-input.json
-          echo "Simulating internal chain..."
-          echo "✅ (This is a placeholder - replace with your real runner logic)"
+          echo "Running fmt-core-chain/run-fmt-engine.py ..."
+          python3 fmt-core-chain/run-fmt-engine.py fixture-input.json
+
+      - name: 📤 Output Result File
+        run: |
+          echo "✅ Result Output:"
+          cat fmt-result-output.json
