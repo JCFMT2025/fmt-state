@@ -1,53 +1,42 @@
-name: Development Phase Tracker
+name: FMT Dev Tracker Sync
 
 on:
-  schedule:
-    - cron: "*/30 * * * *"  # Every 30 minutes
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
-  track_active_development:
+  sync-dev-tracker:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
+      - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Full history for commit operations
 
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
-
-      - name: Track Active Development VDs
-        run: |
-          echo "Scanning active development VDs..."
-          TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          entries=()
-
-          mapfile -t devs < <(jq -r '.vds | to_entries[] | select(.value.status == "Active" and (.value.task | test("Phase|Enhancer|Module"; "i"))) | .key' fmt-state.json)
-          
-          for id in "${devs[@]}"; do
-            task=$(jq -r --arg id "$id" '.vds[$id].task' fmt-state.json)
-            entry="{\"vd\":\"$id\",\"task\":\"$task\"}"
-            entries+=("$entry")
-          done
-
-          log_entry="{\"timestamp\":\"$TS\",\"active_development\":[$(IFS=,; echo "${entries[*]}")]}"
-          jq --argjson entry "$log_entry" '.dev_tracker_log += [$entry]' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
-
-      - name: Acquire Write Lock
-        run: |
-          LOCKFILE=".fmt-write-lock"
-          while [ -f "$LOCKFILE" ]; do
-            echo "Waiting for lock to release..."
-            sleep 3
-          done
-          touch "$LOCKFILE"
-
-      - name: Commit Log Update
+      - name: Set up Git user
         run: |
           git config user.name "fmt-bot"
-          git config user.email "bot@fmt.dev"
-          git pull origin main --rebase
-          git add fmt-state.json
-          git diff --cached --quiet || git commit -m "Dev Tracker: Auto-log active development VDs"
-          git pull origin main --rebase
-          git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
-          rm -f .fmt-write-lock
+          git config user.email "fmt-bot@users.noreply.github.com"
+
+      - name: Clean working directory before pull
+        run: |
+          git reset --hard
+          git clean -fd
+
+      - name: Pull latest changes
+        run: git pull --rebase
+
+      - name: Update commit log
+        run: |
+          # Example: append to a changelog file (replace this with your logic)
+          echo "Update on $(date -u)" >> FMT_CHANGELOG.md
+
+      - name: Commit and push changes
+        run: |
+          git add .
+          git commit -m "chore: update fmt-dev-tracker log [bot]"
+          git push
+        continue-on-error: true  # Prevent total failure if there's nothing to commit
