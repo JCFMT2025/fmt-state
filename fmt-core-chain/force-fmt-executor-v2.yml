@@ -1,0 +1,30 @@
+trigger:
+  manual: true
+  tag: FMT_FORCE_CHAIN
+  description: >
+    Force-executes the FMT prediction workflow with a specified fixture filter.
+    Skips natural language parsing and routes directly to scan.
+
+parameters:
+  fixture_filter:
+    type: object
+    required: true
+    fields:
+      date: string
+      date_end: string
+      teams: list
+      competition: string
+
+action:
+  pass_to: fmt-trigger-scan.yml
+  payload:
+    fixture_filter: "{{ fixture_filter }}"
+  isolate: true
+  force: true
+  tag: FMT_CORE_CHAIN
+
+on_success:
+  message: "✅ Manual FMT workflow initiated successfully."
+
+on_fail:
+  message: "❌ Manual trigger failed. Check payload format or downstream YAML integrity."
