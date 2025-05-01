@@ -1,0 +1,27 @@
+trigger:
+  source: fmt-trigger-scan.yml
+  expects:
+    - scan_results
+    - context
+
+action:
+  type: sort_predictions
+  isolate: true
+  force: true
+  tag: FMT_CORE_CHAIN
+  config:
+    source: "{{ scan_results }}"
+    sort_by: probability
+    sort_order: descending
+    limit: 5
+    retain_all: true
+
+on_success:
+  pass_to: fmt-results-output.yml
+  payload:
+    top_5_predictions: "{{ sorted_predictions[:5] }}"
+    full_predictions: "{{ sorted_predictions }}"
+    context: "{{ context }}"
+
+on_fail:
+  message: "Prediction sorting failed. Please retry or contact support."
