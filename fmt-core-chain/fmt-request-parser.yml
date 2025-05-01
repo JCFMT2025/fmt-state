@@ -1,0 +1,51 @@
+trigger:
+  phrases:
+    - "Run FMT"
+    - "Run FMT on *"
+    - "FMT for *"
+  parser:
+    type: fixture_parser
+    isolate: true
+    force: true
+    tag: FMT_CORE_CHAIN
+    config:
+      extract:
+        - entity: date_or_range
+          from: phrase
+          patterns:
+            - "today"
+            - "tomorrow"
+            - "(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)"
+            - "this week"
+            - "this weekend"
+            - "next week"
+          resolution:
+            "today": ["{{ today }}"]
+            "tomorrow": ["{{ tomorrow }}"]
+            "this week": ["{{ today }}", "{{ upcoming_sunday }}"]
+            "this weekend": ["{{ upcoming_saturday }}", "{{ upcoming_sunday }}"]
+            "next week": ["{{ next_monday }}", "{{ next_sunday }}"]
+
+        - entity: teams
+          from: phrase
+          match_from_list: true
+          list_source: known_teams
+
+        - entity: competition
+          from: phrase
+          match_from_list: true
+          list_source: known_competitions
+
+      fallback_behavior: scan_all_fixtures
+
+actions:
+  on_success:
+    pass_to: fmt-trigger-scan.yml
+    payload:
+      fixture_filter:
+        date: "{{ date_or_range[0] }}"
+        date_end: "{{ date_or_range[1] | default(date_or_range[0]) }}"
+        teams: "{{ teams }}"
+        competition: "{{ competition }}"
+  on_fail:
+    message: "Sorry, I couldn’t parse that request. Try rephrasing or specifying the match more clearly."
