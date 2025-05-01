@@ -1,0 +1,48 @@
+name: FMT Prediction Trigger (Wrapped)
+
+on:
+  workflow_dispatch:
+    inputs:
+      team_1:
+        description: "Home team"
+        required: true
+      team_2:
+        description: "Away team"
+        required: true
+      competition:
+        description: "Competition"
+        required: true
+      date:
+        description: "Fixture date"
+        required: true
+
+jobs:
+  run-fmt-chain:
+    name: Run FMT Core Chain
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Format fixture filter
+        id: format
+        run: |
+          echo "Creating fixture filter..."
+          echo '{
+            "fixture_filter": {
+              "date": "${{ github.event.inputs.date }}",
+              "date_end": "${{ github.event.inputs.date }}",
+              "teams": ["${{ github.event.inputs.team_1 }}", "${{ github.event.inputs.team_2 }}"],
+              "competition": "${{ github.event.inputs.competition }}"
+            }
+          }' > fixture-input.json
+
+          cat fixture-input.json
+
+      - name: Trigger internal FMT YAML
+        run: |
+          echo "⚙️ Running internal chain using fixture-input.json"
+          # 🔧 Replace this line with your real internal trigger
+          # Example: python3 run-fmt.py fixture-input.json
+          echo "Simulating internal chain..."
+          echo "✅ (This is a placeholder - replace with your real runner logic)"
