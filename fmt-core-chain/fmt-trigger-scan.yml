@@ -1,0 +1,38 @@
+trigger:
+  source: fmt-request-parser.yml
+  expects:
+    - fixture_filter.date
+    - fixture_filter.date_end
+    - fixture_filter.teams
+    - fixture_filter.competition
+
+action:
+  type: run_fms_scan
+  isolate: true
+  force: true
+  tag: FMT_CORE_CHAIN
+  config:
+    scan_type: full_market
+    filters:
+      date_range:
+        start: "{{ fixture_filter.date }}"
+        end: "{{ fixture_filter.date_end }}"
+      teams: "{{ fixture_filter.teams }}"
+      competition: "{{ fixture_filter.competition }}"
+    include:
+      markets: all
+      exotic: true
+
+on_success:
+  pass_to: fmt-results-ranker.yml
+  payload:
+    scan_results: "{{ fms_output }}"
+    context:
+      date_range:
+        start: "{{ fixture_filter.date }}"
+        end: "{{ fixture_filter.date_end }}"
+      competition: "{{ fixture_filter.competition }}"
+      teams: "{{ fixture_filter.teams }}"
+
+on_fail:
+  message: "Failed to trigger market scan. Please try again or check fixture details."
