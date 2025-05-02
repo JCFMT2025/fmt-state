@@ -36,22 +36,21 @@ jobs:
             }
           }' > fixture-input.json
 
-          echo "✅ Created fixture-input.json:"
-          cat fixture-input.json
-
       - name: 🚀 Run FMT Engine via Python Script
         run: |
-          echo "Running fmt-core-chain/run-fmt-engine.py ..."
+          echo "Running prediction..."
           python3 fmt-core-chain/run-fmt-engine.py fixture-input.json
 
-      - name: 📤 Output Result File
-        run: |
-          echo "✅ Result Output:"
-          cat fmt-result-output.json
+      - name: 🗂 Create predictions folder if missing
+        run: mkdir -p predictions
 
-      - name: 📦 Upload Result Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: fmt-result
-          path: fmt-result-output.json
-          retention-days: 1
+      - name: 📁 Move result into predictions folder
+        run: mv fmt-result-output.json predictions/fmt-result-output.json
+
+      - name: ✅ Commit result back to repo
+        run: |
+          git config --global user.name "fmt-bot"
+          git config --global user.email "bot@fmt.ai"
+          git add predictions/fmt-result-output.json
+          git commit -m "✅ New prediction result pushed from workflow"
+          git push
