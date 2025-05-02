@@ -48,6 +48,7 @@ jobs:
         run: |
           echo "✅ Result Output:"
           cat fmt-result-output.json
+
       - name: 📦 Upload Result Artifact
         uses: actions/upload-artifact@v3
         with:
