@@ -50,7 +50,7 @@ jobs:
           cat fmt-result-output.json
 
       - name: 📦 Upload Result Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: fmt-result
           path: fmt-result-output.json
