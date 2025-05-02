@@ -54,3 +54,4 @@ jobs:
         with:
           name: fmt-result
           path: fmt-result-output.json
+          retention-days: 1
