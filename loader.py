@@ -13,11 +13,11 @@ if state.get("metadata", {}).get("split_state_enabled"):
     if core_path.startswith("http"):
         print(f"🌐 Fetching from: {core_path}")
         response = requests.get(core_path)
-        print("📦 Raw content returned:\n", response.text[:500])  # Show first 500 characters
+        print("\n📦 Raw content returned:\n" + response.text[:500])  # First 500 chars
         try:
             state = response.json()
         except Exception as e:
-            print("❌ JSON decode error:", e)
+            print("\n❌ JSON decode error:", e)
             exit(1)
     else:
         with open(core_path, "r") as f:
