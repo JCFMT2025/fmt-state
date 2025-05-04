@@ -1,5 +1,11 @@
 {
   "metadata": {
+    "meta": {
+  "version": "v7.4",
+  "split_state_enabled": true,
+  "core_state_path": "fmt-core-state.json",
+  "history_path": "fmt-history.json"
+}
     "system": "FMT (Framework Management Terminal)",
     "last_updated": "2025-05-04T18:44:09Z",
     "version": "v7.4",
