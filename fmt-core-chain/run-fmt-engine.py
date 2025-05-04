@@ -1,58 +1,71 @@
-import json
 import os
+import json
+import argparse
 from datetime import datetime
 
-# Load fixture filter
-with open("fixture-input.json", "r") as f:
-    fixture_filter = json.load(f)["fixture_filter"]
+# ──────────────────────────────────────────────
+# Argument parsing
+parser = argparse.ArgumentParser()
+parser.add_argument('--match', required=True, help='Match ID or slug')
+parser.add_argument('--mode', default='standard', help='Run mode')
+args = parser.parse_args()
 
-# Simulate prediction results
-scan_results = [
-    {"market": "Match Winner", "selection": fixture_filter["teams"][0], "probability": 0.76},
-    {"market": "Over 2.5 Goals", "selection": "Over", "probability": 0.65},
-    {"market": "BTTS", "selection": "Yes", "probability": 0.61},
-    {"market": "Correct Score", "selection": "2-1", "probability": 0.58},
-    {"market": "First Goal", "selection": fixture_filter["teams"][0], "probability": 0.54}
-]
+match_id = args.match
+mode = args.mode
 
-sorted_preds = sorted(scan_results, key=lambda x: x["probability"], reverse=True)
+print(f"🔧 Running FMT Engine for: {match_id} | Mode: {mode}")
 
-# Create prediction result
-result = {
-    "top_5": sorted_preds[:5],
-    "all": sorted_preds,
-    "fixture_context": {
-        "teams": fixture_filter["teams"],
-        "competition": fixture_filter["competition"],
-        "date_range": {
-            "start": fixture_filter["date"],
-            "end": fixture_filter["date_end"]
-        }
+# ──────────────────────────────────────────────
+# Load core system state (new location)
+with open('fmt-core-state.json', 'r') as f:
+    fmt_state = json.load(f)
+
+# 🔁 Optional: use `mode` or `fmt_state` to change behavior
+
+# ──────────────────────────────────────────────
+# Dummy prediction output (simulate logic)
+prediction = {
+    "fixture": {
+        "match_id": match_id,
+        "date": datetime.utcnow().strftime('%Y-%m-%d'),
+        "competition": "Sample League",
+        "teams": ["Team A", "Team B"]
     },
-    "timestamp": datetime.utcnow().isoformat() + "Z"
+    "predictions": [
+        { "market": "Match Winner", "selection": "Team A", "probability": 0.72 },
+        { "market": "Over 2.5 Goals", "selection": "Over", "probability": 0.66 },
+        { "market": "Both Teams to Score", "selection": "Yes", "probability": 0.61 },
+        { "market": "Correct Score", "selection": "2-1", "probability": 0.53 },
+        { "market": "First Goal", "selection": "Team A", "probability": 0.57 }
+    ]
 }
 
-# Define correct local output path for your app
-local_path = "../fmt-test-runner/"
-os.makedirs(local_path + "predictions", exist_ok=True)
+# ──────────────────────────────────────────────
+# Save to predictions/<match>.json
+os.makedirs('predictions', exist_ok=True)
+pred_path = f"predictions/{match_id}.json"
+with open(pred_path, 'w') as f:
+    json.dump(prediction, f, indent=2)
+print(f"✅ Saved prediction: {pred_path}")
 
-# Save primary result
-with open(local_path + "predictions/fmt-result-output.json", "w") as f:
-    json.dump(result, f, indent=2)
-
-# Update history file
-history_file = local_path + "fmt-history.json"
+# ──────────────────────────────────────────────
+# Append to or update fmt-history.json
+history_file = 'fmt-history.json'
 if os.path.exists(history_file):
-    with open(history_file, "r") as f:
+    with open(history_file, 'r') as f:
         history = json.load(f)
 else:
-    history = {
-        "predictions": {},
-        "prediction_log": []
-    }
+    history = []
 
-history["predictions"] = result
-history["prediction_log"].append(result)
+history_entry = {
+    "match_id": match_id,
+    "timestamp": datetime.utcnow().isoformat(),
+    "mode": mode,
+    "file": pred_path
+}
 
-with open(history_file, "w") as f:
+history.append(history_entry)
+with open(history_file, 'w') as f:
     json.dump(history, f, indent=2)
+
+print("📜 fmt-history.json updated")
