@@ -1,0 +1,22 @@
+trigger:
+  source: fmt-results-output.yml
+  expects:
+    - full_predictions
+    - context
+
+action:
+  type: append_to_json
+  config:
+    target_file: fmt-history.json
+    key: prediction_log
+    entry:
+      fixture_context: "{{ context }}"
+      all: "{{ full_predictions }}"
+      timestamp: "{{ now_utc }}"
+      source: "FMT_CORE_CHAIN"
+
+on_success:
+  message: "✅ Prediction log successfully updated in fmt-history.json."
+
+on_fail:
+  message: "❌ Failed to update prediction log. Please check the pipeline and retry."
