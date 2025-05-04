@@ -11,6 +11,19 @@ on:
         required: true
       date:
         required: true
+name: FMT Core Chain Execution
+
+on:
+  workflow_dispatch:
+    inputs:
+      team_1:
+        required: true
+      team_2:
+        required: true
+      competition:
+        required: true
+      date:
+        required: true
 
 jobs:
   run-fmt:
