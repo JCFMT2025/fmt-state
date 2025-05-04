@@ -3,11 +3,17 @@ import os
 
 LOADER_PATH = "loader.py"
 
-# Logic to inject split-state override
+# Logic to inject split-state override with URL support
 SPLIT_PATCH = '''
 # START_SPLIT_STATE_OVERRIDE
-if state.get("metadata", {}).get("split_state_enabled"):
-    with open(state["metadata"]["core_state_path"], "r") as f:
+import urllib.request
+core_path = state["metadata"]["core_state_path"]
+
+if core_path.startswith("http"):
+    with urllib.request.urlopen(core_path) as response:
+        state = json.load(response)
+else:
+    with open(core_path, "r") as f:
         state = json.load(f)
 # END_SPLIT_STATE_OVERRIDE
 '''
@@ -20,7 +26,7 @@ def patch_loader():
     with open(LOADER_PATH, "r") as f:
         code = f.read()
 
-    if "split_state_enabled" in code:
+    if "split_state_enabled" in code and "core_state_path" in code:
         print("✅ Loader already patched. No action taken.")
         return
 
@@ -34,8 +40,7 @@ def patch_loader():
     with open(LOADER_PATH, "w") as f:
         f.write(patched_code)
 
-    print("✅ Patched loader.py with split-state override.")
+    print("✅ Patched loader.py with split-state override and URL support.")
 
 if __name__ == "__main__":
     patch_loader()
-
