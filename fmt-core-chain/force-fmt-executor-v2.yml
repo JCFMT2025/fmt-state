@@ -1,52 +1,40 @@
-name: FMT Core Chain Execution
+name: Force FMT Executor v2
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
-      team_1:
-        description: "Home team"
+      match_id:
         required: true
-      team_2:
-        description: "Away team"
-        required: true
-      competition:
-        description: "Competition"
-        required: true
-      date:
-        description: "Fixture date (YYYY-MM-DD)"
-        required: true
+        type: string
+      mode:
+        required: false
+        type: string
+        default: "standard"
 
 jobs:
-  run-fmt:
-    name: Run FMT Core Chain
+  run-fmt-engine:
     runs-on: ubuntu-latest
-
     steps:
-      - name: 📥 Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: 🛠 Generate fixture-input.json
-        run: |
-          echo '{
-            "fixture_filter": {
-              "date": "${{ github.event.inputs.date }}",
-              "date_end": "${{ github.event.inputs.date }}",
-              "teams": ["${{ github.event.inputs.team_1 }}", "${{ github.event.inputs.team_2 }}"],
-              "competition": "${{ github.event.inputs.competition }}"
-            }
-          }' > fixture-input.json
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
 
-      - name: 🚀 Run FMT Engine
+      - name: Install dependencies
         run: |
-          python3 fmt-core-chain/run-fmt-engine.py fixture-input.json
+          pip install -r fmt-core-chain/requirements.txt
 
-      - name: 📁 Ensure predictions folder exists
-        run: mkdir -p predictions
-
-      - name: ✅ Commit results to repo
+      - name: Run FMT engine
         run: |
-          git config --global user.name "fmt-bot"
-          git config --global user.email "bot@fmt.ai"
-          git add predictions/*.json fmt-history.json
-          git commit -m "✅ FMT Prediction Result"
+          python fmt-core-chain/run-fmt-engine.py --match ${{ inputs.match_id }} --mode ${{ inputs.mode }}
+
+      - name: Commit prediction outputs
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add predictions/*.json fmt-history.json || echo "Nothing to add"
+          git commit -m "Add predictions for ${{ inputs.match_id }}" || echo "No changes to commit"
           git push
