@@ -7,3 +7,513 @@
   },
   "prediction_log": []
 }
+"latest_prediction": {
+    "fixture": "Stoke vs Sheffield United",
+    "date": "2025-04-25",
+    "prediction": [
+      {
+        "bet": "Match Odds - Home Win",
+        "confidence": "72.4%"
+      },
+      {
+        "bet": "Both Teams to Score - Yes",
+        "confidence": "66.1%"
+      },
+      {
+        "bet": "Correct Score - 2-1",
+        "confidence": "14.8%"
+      },
+      {
+        "bet": "Total Goals - Over 2.5",
+        "confidence": "63.2%"
+      },
+      {
+        "bet": "Double Chance - Home or Draw",
+        "confidence": "81.9%"
+      }
+    ],
+    "timestamp": "2025-04-25T09:30:36Z"
+  },
+  "pending_fixture": {
+    "fixture": "",
+    "date": "",
+    "status": "none"
+  },
+  "vd_36_log": [
+    {
+      "timestamp": "2025-04-25T10:11:25Z",
+      "source": "VD-36",
+      "event": "Prediction Execution"
+    },
+    {
+      "timestamp": "2025-04-25T10:20:11Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-25T10:45:59Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-25T11:31:03Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-25T13:36:37Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-25T14:45:08Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-25T15:43:06Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-25T16:54:43Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-25T17:40:39Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-25T18:49:45Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-25T19:27:51Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-25T20:44:46Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-25T21:37:14Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-25T22:46:32Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-25T23:36:09Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T03:10:15Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T03:53:16Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T04:45:47Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T05:42:57Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T06:47:20Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T07:29:34Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T08:45:49Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T09:35:23Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T10:42:15Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T11:27:13Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T13:29:33Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T14:38:39Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T15:36:28Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T16:45:27Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T17:32:20Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T18:45:40Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T19:27:59Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T20:36:52Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T21:30:05Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T22:43:06Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-26T23:31:34Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T03:27:02Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T04:44:35Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T05:41:28Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T06:48:26Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T07:29:38Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T08:45:00Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T09:35:43Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T10:42:35Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T11:28:08Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T13:30:08Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T14:37:48Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T15:36:31Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T16:47:37Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T17:37:51Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T18:46:32Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T19:27:42Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T20:38:31Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T21:30:13Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T22:41:10Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-27T23:37:45Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-28T03:30:11Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-28T04:50:23Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-28T05:58:25Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-28T07:59:28Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-28T11:26:56Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-28T13:51:28Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-28T14:52:01Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-28T15:43:35Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-28T16:50:03Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-28T17:40:42Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-28T18:51:08Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-28T19:28:08Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-28T20:39:33Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-28T21:35:57Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-28T22:44:00Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-28T23:36:35Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T03:26:34Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T04:45:55Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T05:43:46Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T06:52:34Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T07:39:30Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T08:54:00Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T09:45:21Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T10:49:31Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T11:30:56Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T13:46:09Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T14:47:54Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T15:44:36Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T16:51:39Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T17:42:17Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T18:50:18Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T19:29:07Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T20:46:15Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T21:36:54Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T22:43:59Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-29T23:36:57Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T03:26:29Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T04:52:07Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T05:44:13Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T06:54:56Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T07:37:26Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T08:52:13Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T09:43:56Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T10:47:31Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T11:29:50Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T13:38:34Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T14:46:14Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T15:43:32Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T16:52:36Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T17:41:36Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T18:51:15Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T19:25:48Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T20:43:18Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T21:38:54Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T22:43:55Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-04-30T23:38:38Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-05-01T03:36:44Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-05-01T04:50:17Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-05-01T05:44:24Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-05-01T06:52:28Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-05-01T07:36:20Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-05-01T08:51:45Z",
+      "status": "cycle_triggered"
+    },
+    {
+      "timestamp": "2025-05-01T09:42:56Z",
+      "status": "cycle_triggered"
+    }
