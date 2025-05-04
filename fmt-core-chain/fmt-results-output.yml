@@ -4,26 +4,27 @@ trigger:
     - top_5_predictions
     - full_predictions
     - context
+    - target_file
 
 action:
-  type: save_predictions_to_json
+  type: write_to_json
   isolate: true
   force: true
   tag: FMT_CORE_CHAIN
   config:
-    output_file: fmt-history.json
-    overwrite_fields:
+    file: "{{ target_file }}"
+    fields:
       predictions:
         top_5: "{{ top_5_predictions }}"
         all: "{{ full_predictions }}"
         fixture_context: "{{ context }}"
-        timestamp: "{{ now }}"
+        timestamp: "{{ now_utc }}"
 
 on_success:
-  message: |
-    ✅ FMT prediction complete.
-    Showing Top 5 predictions (ranked by probability).
-    🔽 Use “Show All Predictions” to expand full market view.
+  pass_to: fmt-predict-log.yml
+  payload:
+    full_predictions: "{{ full_predictions }}"
+    context: "{{ context }}"
 
 on_fail:
-  message: "Saving predictions failed. Please retry or escalate to a system developer."
+  message: "❌ Failed to write predictions to history log. Check downstream configuration."
