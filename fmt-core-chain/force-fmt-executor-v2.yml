@@ -1,31 +1,26 @@
-name: FMT Prediction Trigger (Wrapped)
+name: FMT Core Chain Execution
 
 on:
   workflow_dispatch:
     inputs:
       team_1:
-        description: "Home team"
         required: true
       team_2:
-        description: "Away team"
         required: true
       competition:
-        description: "Competition"
         required: true
       date:
-        description: "Fixture date (YYYY-MM-DD)"
         required: true
 
 jobs:
-  run-fmt-chain:
-    name: Run FMT Core Chain
-    runs-on: ubuntu-22.04
+  run-fmt:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: 🛠 Create fixture-input.json
+      - name: 🛠 Generate fixture-input.json
         run: |
           echo '{
             "fixture_filter": {
@@ -36,7 +31,17 @@ jobs:
             }
           }' > fixture-input.json
 
-      - name: 🚀 Run FMT Engine via Python Script
+      - name: 🚀 Run Prediction Engine
         run: |
-          echo "Running prediction..."
           python3 fmt-core-chain/run-fmt-engine.py fixture-input.json
+
+      - name: Ensure predictions folder
+        run: mkdir -p predictions
+
+      - name: ✅ Commit results
+        run: |
+          git config --global user.name "fmt-bot"
+          git config --global user.email "bot@fmt.ai"
+          git add predictions/*.json fmt-history.json
+          git commit -m "✅ FMT Prediction Result"
+          git push
