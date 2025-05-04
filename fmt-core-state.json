@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "version": "v1.0.0",
+    "version": "LIVE-REMOTE-V1",
     "description": "Core system state used by FMT Command Hub to confirm architecture and control flags."
   },
   "watchdog_ready": true,
