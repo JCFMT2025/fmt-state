@@ -20,19 +20,27 @@ jobs:
   dispatch:
     runs-on: ubuntu-latest
     steps:
-      - name: 📥 Checkout repository
-        uses: actions/checkout@v3
-
-      - name: 🔁 Dispatch core prediction runner
-        run: |
-          echo "Triggering FMT Core Chain..."
-          echo '{
-            "fixture_filter": {
-              "date": "${{ github.event.inputs.date }}",
-              "date_end": "${{ github.event.inputs.date }}",
-              "teams": ["${{ github.event.inputs.team_1 }}", "${{ github.event.inputs.team_2 }}"],
-              "competition": "${{ github.event.inputs.competition }}"
-            }
-          }' > fixture-input.json
-
-          python3 fmt-core-chain/run-fmt-engine.py fixture-input.json
+      - name: ⏩ Forward to FMT Core Chain
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const axios = require('axios');
+            const payload = {
+              ref: 'main',
+              inputs: {
+                team_1: '${{ github.event.inputs.team_1 }}',
+                team_2: '${{ github.event.inputs.team_2 }}',
+                competition: '${{ github.event.inputs.competition }}',
+                date: '${{ github.event.inputs.date }}'
+              }
+            };
+            await axios.post(
+              'https://api.github.com/repos/${{ github.repository }}/actions/workflows/fmt-core-chain/force-fmt-executor-v2.yml/dispatches',
+              payload,
+              {
+                headers: {
+                  'Authorization': `Bearer ${{ secrets.GITHUB_TOKEN }}`,
+                  'Accept': 'application/vnd.github.v3+json'
+                }
+              }
+            );
