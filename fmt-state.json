@@ -2,7 +2,7 @@
   "metadata": {
   "version": "v7.4",
   "split_state_enabled": true,
-  "core_state_path": "fmt-core-state.json",
+  "core_state_path": "https://raw.githubusercontent.com/JCFMT2025/fmt-state/main/fmt-core-state.json",
   "history_path": "fmt-history.json"
 }
     "system": "FMT (Framework Management Terminal)",
