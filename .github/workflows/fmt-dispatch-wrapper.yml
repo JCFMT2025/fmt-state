@@ -17,16 +17,15 @@ on:
         required: true
 
 jobs:
-  run-fmt-chain:
-    name: Run FMT Core Chain
-    runs-on: ubuntu-22.04
-
+  dispatch:
+    runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@v3
 
-      - name: 🛠 Create fixture-input.json
+      - name: 🔁 Dispatch core prediction runner
         run: |
+          echo "Triggering FMT Core Chain..."
           echo '{
             "fixture_filter": {
               "date": "${{ github.event.inputs.date }}",
@@ -36,21 +35,4 @@ jobs:
             }
           }' > fixture-input.json
 
-      - name: 🚀 Run FMT Engine via Python Script
-        run: |
-          echo "Running prediction..."
           python3 fmt-core-chain/run-fmt-engine.py fixture-input.json
-
-      - name: 🗂 Create predictions folder if missing
-        run: mkdir -p predictions
-
-      - name: 📁 Move result into predictions folder
-        run: mv fmt-result-output.json predictions/fmt-result-output.json
-
-      - name: ✅ Commit result back to repo
-        run: |
-          git config --global user.name "fmt-bot"
-          git config --global user.email "bot@fmt.ai"
-          git add predictions/fmt-result-output.json
-          git commit -m "✅ New prediction result pushed from workflow"
-          git push
