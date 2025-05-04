@@ -11,7 +11,7 @@ action:
   force: true
   tag: FMT_CORE_CHAIN
   config:
-    output_file: fmt-state.json
+    output_file: fmt-history.json
     overwrite_fields:
       predictions:
         top_5: "{{ top_5_predictions }}"
