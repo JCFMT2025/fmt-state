@@ -6,7 +6,7 @@ from datetime import datetime
 with open("fixture-input.json", "r") as f:
     fixture_filter = json.load(f)["fixture_filter"]
 
-# Fake FMS scan result (simulate the FMT engine logic)
+# Fake scan result from FMT logic
 scan_results = [
     {"market": "Match Winner", "selection": fixture_filter["teams"][0], "probability": 0.76},
     {"market": "Over 2.5 Goals", "selection": "Over", "probability": 0.65},
@@ -15,10 +15,10 @@ scan_results = [
     {"market": "First Goal", "selection": fixture_filter["teams"][0], "probability": 0.54}
 ]
 
-# Sort predictions by probability
+# Sort predictions
 sorted_preds = sorted(scan_results, key=lambda x: x["probability"], reverse=True)
 
-# Build full prediction result
+# Build result object
 output = {
     "predictions": {
         "top_5": sorted_preds[:5],
@@ -35,17 +35,17 @@ output = {
     }
 }
 
-# Define paths (write to fmt-test-runner folder)
-target_path = "../fmt-test-runner/fmt-history.json"
-os.makedirs("../fmt-test-runner/predictions", exist_ok=True)
+# Make sure predictions folder exists
+os.makedirs("predictions", exist_ok=True)
 
-# Replace fmt-result-output.json
-with open("../fmt-test-runner/predictions/fmt-result-output.json", "w") as f:
+# Write to fmt-result-output.json (so GitHub can move it)
+with open("fmt-result-output.json", "w") as f:
     json.dump(output["predictions"], f, indent=2)
 
-# Update history log file
-if os.path.exists(target_path):
-    with open(target_path, "r") as f:
+# Update fmt-history.json in repo
+history_path = "fmt-history.json"
+if os.path.exists(history_path):
+    with open(history_path, "r") as f:
         history = json.load(f)
 else:
     history = {
@@ -56,5 +56,5 @@ else:
 history["predictions"] = output["predictions"]
 history["prediction_log"].append(output["predictions"])
 
-with open(target_path, "w") as f:
+with open(history_path, "w") as f:
     json.dump(history, f, indent=2)
