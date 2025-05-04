@@ -4,33 +4,25 @@ on:
   workflow_dispatch:
     inputs:
       team_1:
+        description: "Home team"
         required: true
       team_2:
+        description: "Away team"
         required: true
       competition:
+        description: "Competition"
         required: true
       date:
-        required: true
-name: FMT Core Chain Execution
-
-on:
-  workflow_dispatch:
-    inputs:
-      team_1:
-        required: true
-      team_2:
-        required: true
-      competition:
-        required: true
-      date:
+        description: "Fixture date (YYYY-MM-DD)"
         required: true
 
 jobs:
   run-fmt:
+    name: Run FMT Core Chain
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: 📥 Checkout repository
         uses: actions/checkout@v3
 
       - name: 🛠 Generate fixture-input.json
@@ -44,14 +36,14 @@ jobs:
             }
           }' > fixture-input.json
 
-      - name: 🚀 Run Prediction Engine
+      - name: 🚀 Run FMT Engine
         run: |
           python3 fmt-core-chain/run-fmt-engine.py fixture-input.json
 
-      - name: Ensure predictions folder
+      - name: 📁 Ensure predictions folder exists
         run: mkdir -p predictions
 
-      - name: ✅ Commit results
+      - name: ✅ Commit results to repo
         run: |
           git config --global user.name "fmt-bot"
           git config --global user.email "bot@fmt.ai"
