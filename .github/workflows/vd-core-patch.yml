@@ -1,0 +1,35 @@
+name: VD Core Patch Execution
+
+description: Promote fmt-core-state.json as primary source when split_state_enabled is true
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_override:
+        description: "Confirm override of state loader"
+        required: true
+        default: "yes"
+
+jobs:
+  patch-core-loader:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Run core override patch
+        run: |
+          python vd-tools/promote_core_state.py
+
+      - name: Commit patched loader
+        run: |
+          git config user.name "vd-patch-bot"
+          git config user.email "vd-bot@fmt.dev"
+          git add loader.py
+          git commit -m "VD-36: Promote fmt-core-state.json as primary when split_state_enabled is true"
+          git push || echo "No changes to commit"
