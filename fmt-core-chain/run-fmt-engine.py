@@ -1,45 +1,67 @@
 import json
-import sys
+import os
 from datetime import datetime
 
-def load_fixture_input(filepath):
-    try:
-        with open(filepath, "r") as f:
-            data = json.load(f)
-            return data.get("fixture_filter", {})
-    except Exception as e:
-        print(f"❌ Failed to load fixture input: {e}")
-        sys.exit(1)
+# Load fixture filter input
+with open("fixture-input.json", "r") as f:
+    fixture_filter = json.load(f)["fixture_filter"]
 
-def simulate_fmt_prediction(fixture):
-    print("🔍 Running simulated FMT engine...")
-    print(f"🏟️  Fixture: {fixture['teams'][0]} vs {fixture['teams'][1]}")
-    print(f"📆 Date: {fixture['date']}")
-    print(f"🏆 Competition: {fixture['competition']}")
+# Fake FMS scan result (simulate the FMT engine logic)
+scan_results = [
+    {"market": "Match Winner", "selection": fixture_filter["teams"][0], "probability": 0.76},
+    {"market": "Over 2.5 Goals", "selection": "Over", "probability": 0.65},
+    {"market": "BTTS", "selection": "Yes", "probability": 0.61},
+    {"market": "Correct Score", "selection": "2-1", "probability": 0.58},
+    {"market": "First Goal", "selection": fixture_filter["teams"][0], "probability": 0.54}
+]
 
-    predictions = [
-        {"market": "Match Winner", "selection": fixture["teams"][0], "probability": 0.76},
-        {"market": "Over 2.5 Goals", "selection": "Over", "probability": 0.65},
-        {"market": "BTTS", "selection": "Yes", "probability": 0.61},
-        {"market": "Correct Score", "selection": "2-1", "probability": 0.58},
-        {"market": "First Goal", "selection": fixture["teams"][0], "probability": 0.54}
-    ]
+# Sort predictions by probability
+sorted_preds = sorted(scan_results, key=lambda x: x["probability"], reverse=True)
 
-    output = {
-        "timestamp": datetime.utcnow().isoformat() + "Z",
-        "fixture": fixture,
-        "predictions": predictions
+# Prepare prediction payload
+output = {
+    "predictions": {
+        "top_5": sorted_preds[:5],
+        "all": sorted_preds,
+        "fixture_context": {
+            "teams": fixture_filter["teams"],
+            "competition": fixture_filter["competition"],
+            "date_range": {
+                "start": fixture_filter["date"],
+                "end": fixture_filter["date_end"]
+            }
+        },
+        "timestamp": datetime.utcnow().isoformat() + "Z"
+    }
+}
+
+# Save the current prediction
+os.makedirs("predictions", exist_ok=True)
+with open("predictions/fmt-result-output.json", "w") as f:
+    json.dump(output["predictions"], f, indent=2)
+
+# Update fmt-history.json
+history_path = "fmt-history.json"
+if os.path.exists(history_path):
+    with open(history_path, "r") as f:
+        history = json.load(f)
+else:
+    history = {
+        "predictions": {
+            "top_5": [],
+            "all": [],
+            "fixture_context": {},
+            "timestamp": ""
+        },
+        "prediction_log": []
     }
 
-    with open("fmt-result-output.json", "w") as f:
-        json.dump(output, f, indent=2)
+# Replace live view
+history["predictions"] = output["predictions"]
 
-    print("✅ Simulated FMT prediction written to fmt-result-output.json")
+# Append to log
+history["prediction_log"].append(output["predictions"])
 
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python3 run-fmt-engine.py fixture-input.json")
-        sys.exit(1)
-
-    fixture_data = load_fixture_input(sys.argv[1])
-    simulate_fmt_prediction(fixture_data)
+# Save updated history
+with open(history_path, "w") as f:
+    json.dump(history, f, indent=2)
