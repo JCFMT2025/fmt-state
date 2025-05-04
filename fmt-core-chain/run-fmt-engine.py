@@ -18,7 +18,7 @@ scan_results = [
 # Sort predictions by probability
 sorted_preds = sorted(scan_results, key=lambda x: x["probability"], reverse=True)
 
-# Prepare prediction payload
+# Build full prediction result
 output = {
     "predictions": {
         "top_5": sorted_preds[:5],
@@ -35,33 +35,26 @@ output = {
     }
 }
 
-# Save the current prediction
-os.makedirs("predictions", exist_ok=True)
-with open("predictions/fmt-result-output.json", "w") as f:
+# Define paths (write to fmt-test-runner folder)
+target_path = "../fmt-test-runner/fmt-history.json"
+os.makedirs("../fmt-test-runner/predictions", exist_ok=True)
+
+# Replace fmt-result-output.json
+with open("../fmt-test-runner/predictions/fmt-result-output.json", "w") as f:
     json.dump(output["predictions"], f, indent=2)
 
-# Update fmt-history.json
-history_path = "fmt-history.json"
-if os.path.exists(history_path):
-    with open(history_path, "r") as f:
+# Update history log file
+if os.path.exists(target_path):
+    with open(target_path, "r") as f:
         history = json.load(f)
 else:
     history = {
-        "predictions": {
-            "top_5": [],
-            "all": [],
-            "fixture_context": {},
-            "timestamp": ""
-        },
+        "predictions": {},
         "prediction_log": []
     }
 
-# Replace live view
 history["predictions"] = output["predictions"]
-
-# Append to log
 history["prediction_log"].append(output["predictions"])
 
-# Save updated history
-with open(history_path, "w") as f:
+with open(target_path, "w") as f:
     json.dump(history, f, indent=2)
