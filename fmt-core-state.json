@@ -1,0 +1,39 @@
+{
+  "metadata": {
+    "version": "v1.0.0",
+    "description": "Core system state used by FMT Command Hub to confirm architecture and control flags."
+  },
+  "watchdog_ready": true,
+  "auto_invoke_fms": true,
+  "full_market_scan_enabled": true,
+  "system_stack": {
+    "fmt_command_hub": {
+      "role": "Architectural control + development routing",
+      "function": "Acts as project assistant; maintains understanding of architecture, state sync, and guides development steps."
+    },
+    "github": {
+      "repo_root": "https://github.com/JCFMT2025",
+      "components": [
+        "workflows/: YAML-based automation",
+        "fmt-core-state.json: live system boot config",
+        "fmt-history.json: dynamic prediction + logs",
+        "fmt-core-chain/: core FMT logic engine"
+      ]
+    },
+    "local_python_app": {
+      "folder": "fmt-test-runner",
+      "purpose": "Prototype frontend for FMT logic display (Bet365-style UX)",
+      "notes": [
+        "Connects to predictions JSON from GitHub",
+        "Displays results in UI",
+        "Will eventually evolve into full app (web/mobile)"
+      ]
+    }
+  },
+  "on_session_start": {
+    "sync_from": "fmt-core-state.json",
+    "check_for": ["system_stack", "full_market_scan_enabled"],
+    "if_local_app_present": "Confirm latest predictions path",
+    "if_repo_state_changed": "Prompt user to confirm sync"
+  }
+}
