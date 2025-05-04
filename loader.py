@@ -1,5 +1,11 @@
 # START_LOADER
 
+# START_SPLIT_STATE_OVERRIDE
+if state.get("metadata", {}).get("split_state_enabled"):
+    with open(state["metadata"]["core_state_path"], "r") as f:
+        state = json.load(f)
+# END_SPLIT_STATE_OVERRIDE
+
 import json
 
 with open("fmt-state.json", "r") as f:
