@@ -1,7 +1,7 @@
 # START_LOADER
 
 import json
-import urllib.request
+import requests
 
 with open("fmt-state.json", "r") as f:
     state = json.load(f)
@@ -11,12 +11,14 @@ if state.get("metadata", {}).get("split_state_enabled"):
     core_path = state["metadata"]["core_state_path"]
 
     if core_path.startswith("http"):
-        print(f"🌐 Fetching core state from URL: {core_path}")
-        with urllib.request.urlopen(core_path) as response:
-            content = response.read().decode("utf-8")
-            print("📦 Raw content received:")
-            print(content)
-            state = json.loads(content)
+        print(f"🌐 Fetching from: {core_path}")
+        response = requests.get(core_path)
+        print("📦 Raw content returned:\n", response.text[:500])  # Show first 500 characters
+        try:
+            state = response.json()
+        except Exception as e:
+            print("❌ JSON decode error:", e)
+            exit(1)
     else:
         with open(core_path, "r") as f:
             state = json.load(f)
