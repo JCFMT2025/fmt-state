@@ -6,19 +6,15 @@ on:
       team_1:
         description: "Home team"
         required: true
-        type: string
       team_2:
         description: "Away team"
         required: true
-        type: string
       competition:
         description: "Competition"
         required: true
-        type: string
       date:
         description: "Fixture date (YYYY-MM-DD)"
         required: true
-        type: string
 
 jobs:
   run-fmt-chain:
@@ -44,17 +40,3 @@ jobs:
         run: |
           echo "Running prediction..."
           python3 fmt-core-chain/run-fmt-engine.py fixture-input.json
-
-      - name: 🗂 Create predictions folder if missing
-        run: mkdir -p predictions
-
-      - name: 📁 Move result into predictions folder
-        run: mv fmt-result-output.json predictions/fmt-result-output.json
-
-      - name: ✅ Commit result back to repo
-        run: |
-          git config --global user.name "fmt-bot"
-          git config --global user.email "bot@fmt.ai"
-          git add predictions/fmt-result-output.json
-          git commit -m "✅ New prediction result pushed from workflow"
-          git push
