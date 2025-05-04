@@ -5,6 +5,7 @@
   "core_state_path": "https://raw.githubusercontent.com/JCFMT2025/fmt-state/main/fmt-core-state.json",
   "history_path": "fmt-history.json",
 }
+    "simulation_allowed": false,
     "system": "FMT (Framework Management Terminal)",
     "last_updated": "2025-05-04T18:44:09Z",
     "version": "v7.4",
