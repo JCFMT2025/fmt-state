@@ -19,9 +19,10 @@ action:
 on_success:
   pass_to: fmt-results-output.yml
   payload:
+    target_file: fmt-history.json
     top_5_predictions: "{{ sorted_predictions[:5] }}"
     full_predictions: "{{ sorted_predictions }}"
     context: "{{ context }}"
 
 on_fail:
-  message: "Prediction sorting failed. Please retry or contact support."
+  message: "❌ Prediction sorting failed. Please retry or contact support."
