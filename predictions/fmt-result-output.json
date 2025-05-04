@@ -1,18 +1,18 @@
 {
-  "timestamp": "2025-05-02T14:37:02.399903Z",
+  "timestamp": "2025-05-04T09:35:46.833633Z",
   "fixture": {
-    "date": "2025-05-06",
-    "date_end": "2025-05-06",
+    "date": "2025-05-02",
+    "date_end": "2025-05-02",
     "teams": [
-      "Manchester United",
-      "Ipswich"
+      "Man City",
+      "Wolves"
     ],
     "competition": "Premier League"
   },
   "predictions": [
     {
       "market": "Match Winner",
-      "selection": "Manchester United",
+      "selection": "Man City",
       "probability": 0.76
     },
     {
@@ -32,7 +32,7 @@
     },
     {
       "market": "First Goal",
-      "selection": "Manchester United",
+      "selection": "Man City",
       "probability": 0.54
     }
   ]
