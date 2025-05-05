@@ -1,0 +1,18 @@
+# 🧠 FMT Architect Notes Log
+
+This is the persistent freeform system log used by the FMT Architect and the Command Hub.
+
+The goal: Maintain thought continuity across chats without relying on memory features.
+
+---
+
+## 🧬 Log Started: 2025-05-05
+
+• System split confirmed: fmt-state.json for logic, fmt-history.json for prediction logs  
+• Deprecated: fmt-core-state.json — replaced by proper split pattern  
+• Architect confirms all new chats should reference this file for reasoning continuity  
+• Loader override patch now working: correctly loads from remote core state  
+
+---
+
+[ Add all future entries below this line, newest at top ]
