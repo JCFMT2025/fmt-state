@@ -1,7 +1,7 @@
 # FMT Architect Notes
-File: architects-notes1.txt
+File: architects-notes17.txt
 Created: 2025-05-05
-Order: 1
+Order: 17
 Status: Active
 Scope: Phase 2 VD planning and sync behavior
 Thread: Core system bootstrap chain
