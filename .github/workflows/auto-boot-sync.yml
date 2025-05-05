@@ -19,11 +19,12 @@ jobs:
     if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     continue-on-error: true
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Pull Latest fmt-state.json
+      - name: Pull Latest FMT Split State Files
         run: |
           git fetch origin main
           git checkout main
@@ -31,4 +32,4 @@ jobs:
 
       - name: Confirm Live Sync
         run: |
-          echo "::notice title=Auto Boot Sync::FMT Command Hub successfully synced at $(date -u)"
+          echo "::notice title=Auto Boot Sync::FMT split-state files (core, history, notes) synced at $(date -u)"
