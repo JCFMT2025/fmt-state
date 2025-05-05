@@ -13,7 +13,7 @@ jobs:
       - name: Load and Echo VD-36 Task
         run: |
           echo "Simulating VD-36: FMT Prediction Executor"
-          echo "Current JSON source: $(curl -s https://raw.githubusercontent.com/JCFMT2025/fmt-state/main/fmt-state.json | jq '.metadata.system')"
+          echo "Current JSON source: $(curl -s https://raw.githubusercontent.com/JCFMT2025/fmt-state/main/fmt-core-state.json | jq '.metadata.system')"
           echo "🔍 Checking prediction logic..."
 
           # TEMP: Simulate log writeback or echo for visibility
