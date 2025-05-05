@@ -1,0 +1,49 @@
+name: FMT Core Cleanup
+
+on:
+  schedule:
+    - cron: '30 2 * * *'  # Daily at 2:30 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup-core-json:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Remove Temp Flags and Prune Metadata
+        run: |
+          echo "🔍 Starting cleanup of fmt-core-state.json"
+
+          protected_vds=("VD-34" "VD-35" "VD-36")
+          mapfile -t ids < <(jq -r '.vds | keys[]' fmt-core-state.json)
+          for id in "${ids[@]}"; do
+            if [[ " ${protected_vds[*]} " == *" $id "* ]]; then
+              echo "🛡️ Skipping protected $id"
+              continue
+            fi
+            has_temp_flag=$(jq -r --arg id "$id" '.vds[$id].temp_flag // empty' fmt-core-state.json)
+            if [[ -n "$has_temp_flag" ]]; then
+              echo "➖ Removing temp_flag from $id"
+              jq --arg id "$id" 'del(.vds[$id].temp_flag)' fmt-core-state.json > tmp.json && mv tmp.json fmt-core-state.json
+            fi
+          done
+
+          echo "🧼 Pruning orphan fields in metadata..."
+          jq 'del(.metadata.orphan_fields)' fmt-core-state.json > tmp.json && mv tmp.json fmt-core-state.json
+
+      - name: Commit and Push Cleanup
+        run: |
+          git config user.name "fmt-bot"
+          git config user.email "bot@fmt.dev"
+          git add fmt-core-state.json
+          git diff --cached --quiet || git commit -m "Cleanup: Temp flags and metadata pruned"
+          git push
