@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - fmt-state.json
+      - fmt-core-state.json
 
 jobs:
   track_dev_phases:
@@ -23,7 +23,7 @@ jobs:
           VDS='["VD-11","VD-12","VD-13","VD-14","VD-15","VD-16"]'
 
           # Ensure phase log block exists
-          jq '.dev_phases = (.dev_phases // {})' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+          jq '.dev_phases = (.dev_phases // {})' fmt-core-state.json > tmp.json && mv tmp.json fmt-core-state.json
 
           # Add or update the phase entry
           jq --arg id "$PHASE_ID" \
@@ -36,17 +36,17 @@ jobs:
                 "progress": "0%",
                 "eta": "6h",
                 "complete": false
-              }' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+              }' fmt-core-state.json > tmp.json && mv tmp.json fmt-core-state.json
 
           # Protect assigned VDs automatically
           for vd in $(echo "$VDS" | jq -r '.[]'); do
-            jq --arg id "$vd" '.vds[$id].protected = true' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+            jq --arg id "$vd" '.vds[$id].protected = true' fmt-core-state.json > tmp.json && mv tmp.json fmt-core-state.json
           done
 
       - name: Commit and Push
         run: |
           git config user.name "fmt-bot"
           git config user.email "bot@fmt.dev"
-          git add fmt-state.json
+          git add fmt-core-state.json
           git diff --cached --quiet || git commit -m "Dev Phase Tracker: Initialized PE-P1"
           git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
