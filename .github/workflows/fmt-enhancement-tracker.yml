@@ -21,7 +21,7 @@ jobs:
           TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
           total=6
-          active_count=$(jq '[.vds["VD-11","VD-12","VD-13","VD-14","VD-15","VD-16"] | select(.status == "Active")] | length' fmt-state.json)
+          active_count=$(jq '[.vds["VD-11","VD-12","VD-13","VD-14","VD-15","VD-16"] | select(.status == "Active")] | length' fmt-core-state.json)
           percent=$(awk "BEGIN { printf \"%.0f\", ($active_count / $total) * 100 }")
 
           jq --arg ts "$TS" \
@@ -32,13 +32,12 @@ jobs:
                 "progress": $percent,
                 "status": "Active",
                 "impact_ready": false
-              }' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+              }' fmt-core-state.json > tmp.json && mv tmp.json fmt-core-state.json
 
       - name: Commit and Push
         run: |
           git config user.name "fmt-bot"
           git config user.email "bot@fmt.dev"
-          git add fmt-state.json
+          git add fmt-core-state.json
           git diff --cached --quiet || git commit -m "Enhancer Tracker: Updated prediction progress"
           git push --force https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
-
