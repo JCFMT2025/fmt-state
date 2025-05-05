@@ -1,4 +1,4 @@
-name: Auto Sync FMT JSON + VD-41 Cycle
+name: Auto Sync FMT Core + VD-41 Cycle
 
 on:
   workflow_dispatch:
@@ -11,13 +11,15 @@ on:
     - cron: '0 * * * *'
   push:
     paths:
-      - fmt-state.json
+      - fmt-core-state.json
+      - fmt-history.json
+      - fmt-state/architects-notes/**
 
 permissions:
   contents: write
 
 jobs:
-  fmt_json_sync:
+  sync_core_json:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -26,66 +28,50 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Validate JSON Format
+      - name: Validate Core Files Exist and Format
         run: |
-          if ! jq empty fmt-state.json; then
-            echo "❌ fmt-state.json is not valid JSON"
+          test -f fmt-core-state.json || (echo "❌ Missing fmt-core-state.json" && exit 1)
+          test -f fmt-history.json || (echo "❌ Missing fmt-history.json" && exit 1)
+          if ! jq empty fmt-core-state.json; then
+            echo "❌ fmt-core-state.json is not valid JSON"
             exit 5
           fi
-
-      - name: Detect and Add New VDs
-        run: |
-          known_vds=$(jq -r '.vds | keys[]' fmt-state.json)
-          for i in $(seq 1 100); do
-            vd_id=$(printf "VD-%02d" $i)
-            if ! echo "$known_vds" | grep -q "$vd_id"; then
-              echo "➕ Adding $vd_id to JSON"
-              jq --arg vd "$vd_id" '.vds[$vd] = {"task": "Pending Assignment", "status": "Idle"}' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
-            fi
-          done
-
-      - name: Suggest Protection for Sensitive Tasks
-        run: |
-          echo "🔍 Checking for VDs that may require protection..."
-          autosuggest=$(jq -r '.protection_policy.auto_protect_enabled // false' fmt-state.json)
-          keywords=$(jq -r '.protection_policy.suggest_keywords[]?' fmt-state.json)
-          mapfile -t ids < <(jq -r '.vds | keys[]' fmt-state.json)
-
-          for id in "${ids[@]}"; do
-            task=$(jq -r --arg id "$id" '.vds[$id].task' fmt-state.json)
-            protected=$(jq -r --arg id "$id" '.vds[$id].protected // false' fmt-state.json)
-            for kw in $keywords; do
-              if [[ "$task" == *"$kw"* && "$protected" != "true" ]]; then
-                echo "🟡 Suggestion: $id is assigned to '$task' — consider setting 'protected: true'"
-              fi
-            done
-          done
+          if ! jq empty fmt-history.json; then
+            echo "❌ fmt-history.json is not valid JSON"
+            exit 6
+          fi
+          count=$(ls fmt-state/architects-notes/*.txt 2>/dev/null | wc -l)
+          if [ "$count" -eq 0 ]; then
+            echo "❌ No architect notes found"
+            exit 7
+          fi
+          echo "✅ All files validated."
 
       - name: Run VD-41 Audit & Reassignment
         run: |
           echo "🔎 Starting VD-41 reassignment cycle..."
           TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          LOG='{"timestamp":"'$TIMESTAMP'","cycle":"auto","reassignments":[],"notes":"Cycle completed."}'
+          LOG='{"timestamp":"'$TIMESTAMP'","cycle":"auto","reassignments":[],"notes":"Cycle complete."}'
           updated=false
-          mapfile -t ids < <(jq -r '.vds | keys[]' fmt-state.json)
+          mapfile -t ids < <(jq -r '.vds | keys[]' fmt-core-state.json)
           for id in "${ids[@]}"; do
-            task=$(jq -r --arg id "$id" '.vds[$id].task' fmt-state.json)
-            status=$(jq -r --arg id "$id" '.vds[$id].status' fmt-state.json)
-            is_protected=$(jq -r --arg id "$id" '.vds[$id].protected // false' fmt-state.json)
+            task=$(jq -r --arg id "$id" '.vds[$id].task' fmt-core-state.json)
+            status=$(jq -r --arg id "$id" '.vds[$id].status' fmt-core-state.json)
+            is_protected=$(jq -r --arg id "$id" '.vds[$id].protected // false' fmt-core-state.json)
             if [[ "$is_protected" == "true" ]]; then
               echo "🛡️ Skipping protected $id"
               continue
             fi
             if [[ "$task" == "Pending Assignment" && "$status" == "Idle" ]]; then
               echo "♻️ Reassigning $id"
-              jq --arg id "$id" '.vds[$id].task = "Reassigned by VD-41"' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
-              jq --arg id "$id" '.vds[$id].status = "Reassigned"' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+              jq --arg id "$id" '.vds[$id].task = "Reassigned by VD-41"' fmt-core-state.json > tmp.json && mv tmp.json fmt-core-state.json
+              jq --arg id "$id" '.vds[$id].status = "Reassigned"' fmt-core-state.json > tmp.json && mv tmp.json fmt-core-state.json
               LOG=$(echo "$LOG" | jq --arg id "$id" '.reassignments += [{"vd":$id,"reason":"Idle with no task"}]')
               updated=true
             fi
           done
           if [ "$updated" = true ]; then
-            jq --argjson entry "$LOG" '.vd_41_log += [$entry]' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+            jq --argjson entry "$LOG" '.vd_41_log += [$entry]' fmt-core-state.json > tmp.json && mv tmp.json fmt-core-state.json
             echo "📦 VD-41 log updated."
           else
             echo "✅ No reassignments needed."
@@ -94,14 +80,14 @@ jobs:
       - name: Update Timestamp
         run: |
           TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          jq --arg ts "$TS" '.metadata.last_updated = $ts' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+          jq --arg ts "$TS" '.metadata.last_updated = $ts' fmt-core-state.json > tmp.json && mv tmp.json fmt-core-state.json
 
       - name: Commit and Push
         run: |
           git config user.name "fmt-bot"
           git config user.email "bot@fmt.dev"
-          git add fmt-state.json
-          git diff --cached --quiet || git commit -m "Auto-sync: Timestamp and VD-41 audit"
+          git add fmt-core-state.json
+          git diff --cached --quiet || git commit -m "Auto-sync: Core state + VD-41 audit"
           git push --force https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
 
   vd_41_manual_trigger:
