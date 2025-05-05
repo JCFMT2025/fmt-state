@@ -21,18 +21,18 @@ jobs:
           COMPLETED_VDS='["VD-17","VD-18"]'
 
           # Ensure impact_log block exists
-          jq '.impact_log = (.impact_log // [])' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+          jq '.impact_log = (.impact_log // [])' fmt-core-state.json > tmp.json && mv tmp.json fmt-core-state.json
 
           # Append the impact phase completion entry
           jq --arg phase "$PHASE_NAME" \
              --argjson completed_by "$COMPLETED_VDS" \
              --arg timestamp "$TS" \
-             '.impact_log += [{"phase": $phase, "completed_by": $completed_by, "timestamp": $timestamp, "status": "Success"}]' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+             '.impact_log += [{"phase": $phase, "completed_by": $completed_by, "timestamp": $timestamp, "status": "Success"}]' fmt-core-state.json > tmp.json && mv tmp.json fmt-core-state.json
 
       - name: Commit and Push Update
         run: |
           git config user.name "fmt-bot"
           git config user.email "bot@fmt.dev"
-          git add fmt-state.json
+          git add fmt-core-state.json
           git diff --cached --quiet || git commit -m "Impact Logger: Recorded Phase 2 Completion"
           git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
