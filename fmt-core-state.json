@@ -32,8 +32,18 @@
   },
   "on_session_start": {
     "sync_from": "fmt-core-state.json",
-    "check_for": ["system_stack", "full_market_scan_enabled"],
+    "check_for": [
+      "system_stack",
+      "full_market_scan_enabled"
+    ],
     "if_local_app_present": "Confirm latest predictions path",
     "if_repo_state_changed": "Prompt user to confirm sync"
+  },
+  "enhancement_status": {
+    "phase": "PE-P1",
+    "timestamp": "2025-05-05T19:39:30Z",
+    "progress": "0%",
+    "status": "Active",
+    "impact_ready": false
   }
 }
