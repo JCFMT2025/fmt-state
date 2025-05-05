@@ -21,12 +21,12 @@ jobs:
             "progress": "100%",
             "status": "Completed",
             "impact_ready": true
-          }' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+          }' fmt-core-state.json > tmp.json && mv tmp.json fmt-core-state.json
 
       - name: Commit and Push
         run: |
           git config user.name "fmt-bot"
           git config user.email "bot@fmt.dev"
-          git add fmt-state.json
+          git add fmt-core-state.json
           git diff --cached --quiet || git commit -m "Impact Phase 2 Completed: Progress set to 100%"
           git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
