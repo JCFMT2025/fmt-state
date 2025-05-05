@@ -16,32 +16,32 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Verify fmt-state.json Exists
+      - name: Verify fmt-core-state.json Exists
         run: |
-          if [ ! -f "fmt-state.json" ]; then
-            echo "Error: fmt-state.json not found!"
+          if [ ! -f "fmt-core-state.json" ]; then
+            echo "Error: fmt-core-state.json not found!"
             exit 1
           fi
 
       - name: Promote Impact to True and Update Status
         run: |
           # Ensure enhancement_status block exists
-          jq '.enhancement_status = (.enhancement_status // {})' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+          jq '.enhancement_status = (.enhancement_status // {})' fmt-core-state.json > tmp.json && mv tmp.json fmt-core-state.json
 
           # Set impact_ready to true
-          jq '.enhancement_status.impact_ready = true' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+          jq '.enhancement_status.impact_ready = true' fmt-core-state.json > tmp.json && mv tmp.json fmt-core-state.json
 
           # Set status to Completed
-          jq '.enhancement_status.status = "Completed"' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+          jq '.enhancement_status.status = "Completed"' fmt-core-state.json > tmp.json && mv tmp.json fmt-core-state.json
 
           # Update timestamp
           NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          jq --arg ts "$NOW" '.enhancement_status.timestamp = $ts' fmt-state.json > tmp.json && mv tmp.json fmt-state.json
+          jq --arg ts "$NOW" '.enhancement_status.timestamp = $ts' fmt-core-state.json > tmp.json && mv tmp.json fmt-core-state.json
 
       - name: Commit and Push Changes
         run: |
           git config user.name "fmt-bot"
           git config user.email "bot@fmt.dev"
-          git add fmt-state.json
+          git add fmt-core-state.json
           git diff --cached --quiet || git commit -m "Impact Promoter: Enhancement phase completed and ready"
           git push https://x-access-token:${{ secrets.PAT_PUSH_TOKEN }}@github.com/${{ github.repository }} HEAD:main --force
