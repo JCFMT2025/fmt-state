@@ -1,17 +1,25 @@
 # 🧠 FMT Architect Notes Log
 
-This is the persistent freeform system log used by the FMT Architect and the Command Hub.
+This is the persistent system log used by the FMT Architect and the FMT Command Hub.
 
-The goal: Maintain thought continuity across chats without relying on memory features.
+> Purpose: Maintain architectural reasoning, development logic, module lineage, and system decisions across chats and resets.  
+> Referenced by Command Hub to ensure continuity without memory reliance.
 
 ---
 
-## 🧬 Log Started: 2025-05-05
+## 📅 Log Initiated: 2025-05-05  
+**System Mode:** Split State + Persistent Notes
 
-• System split confirmed: fmt-state.json for logic, fmt-history.json for prediction logs  
-• Deprecated: fmt-core-state.json — replaced by proper split pattern  
-• Architect confirms all new chats should reference this file for reasoning continuity  
-• Loader override patch now working: correctly loads from remote core state  
+• ✅ Split State confirmed:  
+ • `fmt-core-state.json` = live config and system architecture  
+ • `fmt-history.json` = historical predictions, modules, audit logs  
+• ✅ `architects-notes.txt` = human-level reasoning and build memory  
+• 🔁 Loader patch ensures every session checks this file for command decisions and system guidance  
+• 📌 Instruction updates planned to reflect direct access to this log  
+• 🔒 Protected VDs confirmed (VD-34 to VD-36, VD-41 to VD-46)  
+• ✅ Development style set: Micro-parallel sprint architecture using up to 80 VDs safely  
+• 📋 YAMLs must be schema-aware and integration-safe across future phases  
+• ⚠️ `fmt-core-state.json` **is not deprecated** — it is live and authoritative
 
 ---
 
