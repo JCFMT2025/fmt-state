@@ -6,3 +6,38 @@ Status: Active
 Scope: Phase 2 VD planning and sync behavior
 Thread: Core system bootstrap chain
 ---
+FMT Development May25 - Compressed Chat Summary
+1. System Overview:
+- FMT was originally built in GPT up to v6.3, now operates outside GPT for control/memory reasons.
+- Current system (v7.4) relies on external JSON config, VD task control, YAML modules, and a
+Python app.
+2. Legacy Modules (v6.3):
+- Modules like BLE, PAIL, PERA v2, BMDS, CRS, ISM, SCST, etc., were reviewed.
+- Most modules preserved or superseded.
+- Some missing: FMT-LTM+ (Live Tactical), Post-Bet Analysis, TGI, Referee Bias Depth.
+3. Phase Review & Planning:
+- Phase 1: Restore FMT-LTM+ and associated tactical modules.
+- Confirmed need to handle: event parsing, momentum tracking, xGChain, EPV, shot clusters,
+cache, kill-switch, logs.
+4. Risk and Speed Assessment:
+- Micro-parallel development proposed (40-80 VDs).
+- Timeline reduced from 12-18 days -> 6-8 days with integrity preserved.
+- Further reduction to 4-6 days using 60-80 VDs confirmed safe.
+5. System Safeguards:
+- YAMLs to be modular, no workflow collisions.
+- JSON and FMT Command Hub: full overwrite only, designed for future phase compatibility.
+- VD-41 is resource manager - protected all Phase 1 VDs with `protected_phase1_active: true`.
+- Critical VDs (VD-34 to 36, VD-41 to 46) excluded from assignment.
+6. Confirmed Modules to Build:
+- Event parsers, momentum layers, EPV trackers, redundancy layers, cache, kill-switch, YAML
+writers, and validation units.
+7. VD Conflict Check:
+- VD-11 to VD-18 reviewed. VD-12 and VD-17 protected. VD-11/14 assignable after clean
+suspension. Others safe.
+8. Output Planning:
+- YAMLs: 5 new files
+- JSON: careful structural update
+- FMT Hub: add monitoring/alerts
+- Task assignments + staging: ready
+- Awaiting `fmt-state.json` sync to begin actual build.
+Next Step: Await manual upload or recovery of fmt-state.json to begin execution.
