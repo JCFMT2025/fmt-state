@@ -6,16 +6,3 @@ Status: Active
 Scope: Phase 2 VD planning and sync behavior
 Thread: Core system bootstrap chain
 ---
->> USER: can you tell me about our system and how many VD's we have in total irrespective of active or idle
-
->> ASSISTANT: The FMT (Framework Management Terminal) system is currently operating on version **v7.4** and is scheduled for an upgrade to **v8.0**. It has **state synchronization enabled**, with automation managed by Virtual Developers **VD-34** (state syncer) and **VD-35** (scheduler). The system also features **predictive capabilities** and a **watchdog mechanism** to ensure operational integrity.
-
-As of the latest update on **April 25, 2025**, the system comprises a total of **73 Virtual Developers (VDs)**, identified by IDs ranging from **VD-01** to **VD-73**. Among these, the following VDs are actively assigned tasks:
-
-- **VD-01**: Auto-update: Sync timestamp (ETA: 1h 15m)
-- **VD-03**: Monitor GitHub Actions
-- **VD-36**: Audit reporting metrics
-
-The remaining VDs are currently in an idle state, awaiting task assignments.
-
-If you require a detailed breakdown of each VD's status or information on specific components, feel free to ask. 
