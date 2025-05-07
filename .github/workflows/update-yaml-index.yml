@@ -1,0 +1,40 @@
+name: Auto Update YAML Index
+
+on:
+  push:
+    paths:
+      - '**/*.yml'
+      - '**/*.yaml'
+  workflow_dispatch:
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Generate YAML Index
+        run: |
+          echo '{ "files": [' > fmt-meta/yaml-index.json
+          find . -type f \( -iname "*.yml" -o -iname "*.yaml" \) | grep -v "^./.git" | grep -v "node_modules" | while read path; do
+            name=$(basename "$path")
+            folder=$(dirname "$path" | sed 's|^\./||')
+            echo "  { \"name\": \"$name\", \"folder\": \"$folder\" }," >> fmt-meta/yaml-index.json
+          done
+          sed -i '$ s/},/}/' fmt-meta/yaml-index.json
+          echo ']}' >> fmt-meta/yaml-index.json
+
+      - name: Commit updated index
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add fmt-meta/yaml-index.json
+          git commit -m "Auto-update yaml-index.json" || echo "No changes to commit"
+          git push
