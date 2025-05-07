@@ -23,7 +23,8 @@ jobs:
       - name: Generate YAML Index
         run: |
           echo '{ "files": [' > fmt-meta/yaml-index.json
-          find . -type f \( -iname "*.yml" -o -iname "*.yaml" \) | grep -v "^./.git" | grep -v "node_modules" | while read path; do
+          find . -type f \( -iname "*.yml" -o -iname "*.yaml" \) -print0 | while IFS= read -r -d '' path; do
+            echo "Found: $path"
             name=$(basename "$path")
             folder=$(dirname "$path" | sed 's|^\./||')
             echo "  { \"name\": \"$name\", \"folder\": \"$folder\" }," >> fmt-meta/yaml-index.json
