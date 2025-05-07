@@ -6,3 +6,44 @@ Status: Active
 Scope: Phase 2 VD planning and sync behavior
 Thread: Core system bootstrap chain
 ---
+FMT SYSTEM - ARCHITECT SUMMARY
+ROLE:
+- Architect (user): designs logic, not code
+- FMT Command Hub (AI): manages development tasks, YAMLs, JSONs, Python workflows
+ARCHITECTURE:
+- GitHub repo (fmt-state): source of truth
+- Python GUI app: match selector and prediction viewer
+- Command Hub: dev and ops assistant
+WORKING HYBRID FLOW (original setup):
+1. User selects fixture in GUI
+2. Python triggers GitHub via workflow_dispatch
+3. dispatch-wrapper triggers force-fmt-executor-v2
+4. run-fmt-engine.py runs FMT logic
+5. Result saved to predictions/ and fmt-history.json
+6. App reads result from predictions/
+CHANGES THAT BROKE IT:
+- Split single JSON into fmt-core-state.json and fmt-history.json
+- force-fmt-executor-v2 moved out of .github/workflows/
+- Misaligned filenames or dispatch payloads
+- Tried to run engine locally instead of GitHub
+CURRENT STATE:
+- App sends dispatch [OK]
+- Token & trigger work [OK]
+- dispatch-wrapper.yml in correct place [OK]
+- force-fmt-executor-v2 needs to be in .github/workflows/ [Pending]
+- Predictions sometimes not saved/read properly [Pending]
+FIX STEPS:
+1. Move force-fmt-executor-v2.yml into .github/workflows/
+2. Ensure workflow_dispatch inputs match Python app
+3. Confirm prediction file + fmt-history.json are committed
+4. App retrieves from local predictions/ folder
+5. No engine logic should run locally
+GOAL:
+Fully restore original hybrid system:
+- Python sends GitHub trigger
+- GitHub handles predictions
+- App displays result (no local processing)
+NOTES:
+- fmt-runner.py and send_fmt_trigger.py must read/write correctly
+- JSONs must stay split for performance
+- File paths and casing must match across app and GitHub
