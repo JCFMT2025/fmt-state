@@ -6,14 +6,6 @@ Status: Active
 Scope: Phase 2 VD planning and sync behavior
 Thread: Core system bootstrap chain
 ---
-FMT Architect Notes - Entry 6
-# FMT Architect Notes
-File: architects-notes6.txt
-Created: 2025-05-05
-Order: 6
-Status: Active
-Scope: Migration to folder-based notes model and update of FMT Command Hub instructions
-Thread: Reasoning Layer Refactor (Split Memory Implementation)
 # FMT Command Hub -- Compressed Conversation Summary (2025-05-05)
 ## Summary Topic:
 Conversion from single-file `architects-notes.txt` to structured folder-based reasoning model
