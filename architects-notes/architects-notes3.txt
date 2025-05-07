@@ -6,3 +6,33 @@ Status: Active
 Scope: Phase 2 VD planning and sync behavior
 Thread: Core system bootstrap chain
 ---
+FMT Command Hub - Compressed Chat Summary (May 2025)
+Key Milestones
+- Confirmed transition to split JSON state: fmt-core-state.json + fmt-history.json
+- Deprecated fmt-state.json in favor of split state model
+- Introduced architects-notes.txt for persistent cross-chat memory (non-embedding)
+- Designed Phase 1 (Live Tactical Engine) development using micro-parallel strategy (60–80 VDs)
+- Protected critical VDs (VD-34 through VD-36, VD-41 through VD-46)
+- Structured YAML/JSON/Command Hub alterations into phased planning
+- Adjusted VD-41 behavior to honor protected_phase1_active: true flag
+- Refined development plan to finish Phase 1 in 6–7 days with integrity-safe assignments
+- FMT Command Hub Instructions updated to reflect:
+* Split JSON loading
+* Persistent architect notes
+* System boot from core state
+* Avoidance of repeated phrasing
+- Manual audits performed on VD availability (VD-11 to VD-18 fully checked)
+- Future-proofed YAML/JSON schema for downstream Phase 2, 3 expansion
+- Generated strategic toolset: Gantt, Risk/Reward Table, Dependency Map, Redundancy Logic
+Core Design Philosophies Captured
+- System must avoid hallucinated deployments
+- VDs only execute against controlled micro-tasks
+- JSON/YAML changes always delivered as complete overwrite bundles
+- All runtime diagnostics run under heartbeat/watchdog system
+- BLE and live feed components supported by fallback and drift detection
+- All instructions centralized inside GitHub and kept external to AI memory
+Status
+- Architect confirmed latest instructions are live and deployed
+- FMT Command Hub actively using external instructions for decision context
+- Phase 1 cleared for deployment setup upon manual trigger
+-- End of Summary --
