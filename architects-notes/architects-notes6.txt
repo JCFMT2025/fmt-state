@@ -6,3 +6,91 @@ Status: Active
 Scope: Phase 2 VD planning and sync behavior
 Thread: Core system bootstrap chain
 ---
+ARCHITECTS-NOTES006.TXT
+Date: 2025-05-07
+Architect: JCFMT2025
+
+⸻
+
+📄 SESSION CONTEXT SNAPSHOT
+
+This session focused on restoring full FMT Command Hub architectural integrity by enabling non-simulated, live YAML access, resolving limitations with both GitHub and local Python access models. The architect clarified system memory structure, outlined risks of fallback simulation, and successfully implemented structural changes to FMT’s YAML discovery and access protocols.
+
+⸻
+
+✅ COMPLETED SYSTEM ACTIONS
+
+✔️ YAML Visibility Enablement
+	•	Identified existing YAMLs stored in:
+	•	.github/workflows
+	•	fmt-core-chain
+	•	Created canonical yaml-index.json at fmt-meta/yaml-index.json
+	•	Format uses folder + filename structure:
+
+{
+  "files": [
+    { "name": "example.yaml", "folder": "fmt-core-chain" }
+  ]
+}
+
+	•	Added this file to sync_paths in FMT Command Hub Instructions:
+
+  - fmt-meta/yaml-index.json
+
+	•	Confirmed raw path construction protocol:
+	•	https://raw.githubusercontent.com/JCFMT2025/fmt-state/main/<folder>/<filename>
+	•	Fully implemented internally to GPT logic
+
+✔️ GitHub Action Auto-Updater
+	•	Created .github/workflows/update-yaml-index.yml
+	•	Triggers:
+	•	On .yml or .yaml file changes (push)
+	•	Manual via workflow_dispatch
+	•	Uses find to dynamically regenerate yaml-index.json
+	•	Commits and pushes the update with git pull --rebase fix
+
+⸻
+
+⚡ SYSTEM BEHAVIORAL CHANGES
+	•	All future YAML visibility is non-simulated
+	•	GPT search can respond to:
+“Do we have a YAML for fallback handling?”
+“Show me the dev tracker YAML.”
+	•	Internally defined raw path resolution is now trusted logic
+	•	GPT now treats any entry in yaml-index.json as fully accessible
+
+⸻
+
+🔖 ARCHITECTURAL RULE ENFORCED
+
+All GPT-managed prediction logic must be externalized going forward.
+
+	•	Canonical format: .yaml, .json, or .txt
+	•	Location: fmt-state/architects-notes/ or fmt-logic/
+	•	New logic tasks must carry tag: logic-externalise
+	•	Phase enforcement rule:
+
+phase_rules:
+  phase2:
+    require_logic_externalisation: true
+
+
+
+⸻
+
+📊 STATUS
+	•	YAML discovery: ✅ live and automated
+	•	Python app: ❌ still local-only, not yet declared
+	•	GPT fallback simulation: ❌ disallowed
+	•	System now in fully restorable state with clean YAML awareness
+
+⸻
+
+⚖️ NEXT STEPS (OPTIONAL)
+	•	Create py-index.json once Python app is ready for declaration
+	•	Begin formal logic mapping across YAML workflows
+	•	Expand tags and descriptions in yaml-index.json for better semantic matching
+
+⸻
+
+End of ARCHITECTS-NOTES006.TXT
