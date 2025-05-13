@@ -20,8 +20,6 @@ print(f"🔧 Running FMT Engine for: {match_id} | Mode: {mode}")
 with open('fmt-core-state.json', 'r') as f:
     fmt_state = json.load(f)
 
-# 🔁 Optional: use `mode` or `fmt_state` to change behavior
-
 # ──────────────────────────────────────────────
 # Dummy prediction output (simulate logic)
 prediction = {
@@ -49,23 +47,21 @@ with open(pred_path, 'w') as f:
 print(f"✅ Saved prediction: {pred_path}")
 
 # ──────────────────────────────────────────────
-# Append to or update fmt-history.json
+# Save to fmt-history.json (Command Hub compatible structure)
 history_file = 'fmt-history.json'
 if os.path.exists(history_file):
     with open(history_file, 'r') as f:
         history = json.load(f)
 else:
-    history = []
+    history = { "predictions": {} }
 
-history_entry = {
-    "match_id": match_id,
+history["predictions"][match_id] = {
     "timestamp": datetime.utcnow().isoformat(),
     "mode": mode,
     "file": pred_path
 }
 
-history.append(history_entry)
 with open(history_file, 'w') as f:
     json.dump(history, f, indent=2)
 
-print("📜 fmt-history.json updated")
+print("📜 fmt-history.json updated with structured entry")
