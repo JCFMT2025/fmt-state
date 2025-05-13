@@ -1,3 +1,4 @@
+# Force redeploy - reindex for Command Hub
 name: FMT Dispatch Wrapper
 
 on:
