@@ -1,4 +1,3 @@
-# Force redeploy - reindex for Command Hub
 name: FMT Dispatch Wrapper
 
 on:
@@ -15,8 +14,33 @@ on:
         type: string
 
 jobs:
-  dispatch-core-engine:
-    uses: ./fmt-core-chain/force-fmt-executor-v2.yml
-    with:
-      match_id: ${{ inputs.match_id }}
-      mode: ${{ inputs.mode }}
+  run-fmt-engine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install -r fmt-core-chain/requirements.txt
+
+      - name: Run FMT engine
+        run: |
+          python fmt-core-chain/run-fmt-engine.py --match ${{ inputs.match_id }} --mode ${{ inputs.mode }}
+
+      - name: Commit prediction outputs
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add predictions/*.json fmt-history.json || echo "Nothing to add"
+          git commit -m "Add predictions for ${{ inputs.match_id }}" || echo "No changes to commit"
+          git push
+
+      - name: Confirm result
+        run: |
+          echo "Prediction complete for: ${{ inputs.match_id }}"
